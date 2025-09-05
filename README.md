@@ -6,7 +6,7 @@ To run this application:
 
 ```bash
 npm install
-npm run start
+npm run dev:ssr
 ```
 
 # Building For Production
