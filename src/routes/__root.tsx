@@ -19,4 +19,6 @@ export const Route = createRootRoute({
       />
     </>
   ),
+  notFoundComponent: () => <div>Page not found!</div>,
+  errorComponent: () => <div>Error</div>,
 })

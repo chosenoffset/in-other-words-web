@@ -6,9 +6,10 @@
   ],
   "routes": [
     { "src": "/assets/(.*)", "dest": "/dist/client/assets/$1" },
-    { "src": "/(logo192|logo512|manifest|favicon)\.(png|json|ico)$", "dest": "/public/$1.$2" },
+    {
+      "src": "/(logo192|logo512|manifest|favicon)\.(png|json|ico)$",
+      "dest": "/public/$1.$2"
+    },
     { "src": "/(.*)", "dest": "/api/ssr.ts" }
   ]
 }
-
-

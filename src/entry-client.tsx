@@ -6,5 +6,3 @@ import './styles.css'
 const router = createRouter()
 
 hydrateRoot(document, <RouterClient router={router} />)
-
-
