@@ -23,29 +23,43 @@ async function createServer() {
       const { render } = await vite.ssrLoadModule('/src/entry-server.tsx')
 
       const webRes = await render({
-        request: new Request(new URL(url, `http://${req.headers.host}`).toString()),
+        request: new Request(
+          new URL(url, `http://${req.headers.host}`).toString()
+        ),
       })
 
       res.statusMessage = webRes.statusText
       res.status(webRes.status)
       webRes.headers.forEach((value, key) => res.setHeader(key, value))
 
-      // Inject stylesheet link to ensure styles in dev
+      // Inject stylesheet link and client script to ensure styles and hydration in dev
       const html = await webRes.text()
+      const port = process.env.PORT || 3000
+      const viteTag = `<script type="module">
+        import RefreshRuntime from 'http://localhost:${port}/@react-refresh'
+        RefreshRuntime.injectIntoGlobalHook(window)
+        window.$RefreshReg$ = () => {}
+        window.$RefreshSig$ = () => (type) => type
+        window.__vite_plugin_react_preamble_installed__ = true
+      </script>`
       const linkTag = '<link rel="stylesheet" href="/src/styles.css">'
-      let styledHtml
+      const scriptTag =
+        '<script type="module" src="/src/entry-client.tsx"></script>'
+      const injectedContent = `${viteTag}${linkTag}${scriptTag}`
+
+      let finalHtml
       if (html.includes('</head>')) {
-        styledHtml = html.replace('</head>', `${linkTag}</head>`)
+        finalHtml = html.replace('</head>', `${injectedContent}</head>`)
       } else if (html.includes('</HEAD>')) {
-        styledHtml = html.replace('</HEAD>', `${linkTag}</HEAD>`)
+        finalHtml = html.replace('</HEAD>', `${injectedContent}</HEAD>`)
       } else if (html.includes('</body>')) {
-        styledHtml = html.replace('</body>', `${linkTag}</body>`)
+        finalHtml = html.replace('</body>', `${injectedContent}</body>`)
       } else if (html.includes('</BODY>')) {
-        styledHtml = html.replace('</BODY>', `${linkTag}</BODY>`)
+        finalHtml = html.replace('</BODY>', `${injectedContent}</BODY>`)
       } else {
-        styledHtml = linkTag + html
+        finalHtml = injectedContent + html
       }
-      res.send(styledHtml)
+      res.send(finalHtml)
     } catch (e) {
       vite.ssrFixStacktrace(e)
       console.error(e)
@@ -60,5 +74,3 @@ async function createServer() {
 }
 
 createServer()
-
-

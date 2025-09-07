@@ -15,14 +15,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const webRes = await render({ request })
 
     // Read Vite manifest to inject CSS and client entry
-    const manifestPath = path.resolve(__dirname, '../dist/client/.vite/manifest.json')
+    const manifestPath = path.resolve(
+      __dirname,
+      '../dist/client/.vite/manifest.json'
+    )
     let cssLinks = ''
     let clientScript = ''
     if (fs.existsSync(manifestPath)) {
       const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
       const entry = Object.values<any>(manifest).find((m: any) => m.isEntry)
-      const cssFiles: string[] = (entry?.css ?? [])
-      cssLinks = cssFiles.map((href) => `<link rel="stylesheet" href="/${href}">`).join('')
+      const cssFiles: string[] = entry?.css ?? []
+      cssLinks = cssFiles
+        .map(href => `<link rel="stylesheet" href="/${href}">`)
+        .join('')
       if (entry?.file) {
         clientScript = `<script type="module" src="/${entry.file}"></script>`
       }
@@ -41,5 +46,3 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(500).send('Internal Server Error')
   }
 }
-
-
