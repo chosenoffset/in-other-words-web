@@ -3,16 +3,16 @@ import { useAuth } from '@clerk/clerk-react'
 import axios from 'axios'
 import { userSchema } from '@/hooks/schemas'
 
-export const useCreateUserFromClerkId = () => {
+export const useCreateUser = () => {
   const queryClient = useQueryClient()
   const { getToken } = useAuth()
 
   return useMutation({
-    mutationFn: async ({ clerkId }: { clerkId: string }) => {
+    mutationFn: async () => {
       const token = await getToken()
       const headers = token ? { Authorization: `Bearer ${token}` } : undefined
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/public/register/${clerkId}`,
+        `${import.meta.env.VITE_API_URL}/app/register`,
         {},
         headers ? { headers } : undefined
       )
