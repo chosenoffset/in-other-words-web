@@ -1,10 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import {
-  SignedIn,
-  SignedOut,
-  UserButton,
-  SignInButton,
-} from '@clerk/clerk-react'
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import { NavLinks, type AppNavLink } from './NavLinks'
 import { ClientOnly } from './ClientOnly'
 
@@ -40,11 +35,9 @@ export function TopNav() {
                 />
               </SignedIn>
               <SignedOut>
-                <SignInButton mode='modal'>
-                  <button className='signin-button' type='button'>
-                    Sign in
-                  </button>
-                </SignInButton>
+                <Link to='/sign-in' preload='intent' className='signin-button'>
+                  Sign in
+                </Link>
               </SignedOut>
             </ClientOnly>
           </div>

@@ -4,6 +4,7 @@ import { routeTree } from './routeTree.gen'
 export function createRouter() {
   return createTanstackRouter({
     routeTree,
+    notFoundMode: 'root',
     context: {},
     defaultPreload: 'intent',
     scrollRestoration: true,
