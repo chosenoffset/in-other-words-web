@@ -11,7 +11,7 @@ export function PuzzleOfTheDay({ puzzle }: PuzzleOfTheDayProps) {
       <div className='puzzle-header'>
         <div className='puzzle-meta'>
           <span className='puzzle-date'>
-            {new Date(puzzle.date).toLocaleDateString('en-US', {
+            {new Date().toLocaleDateString('en-US', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
@@ -19,9 +19,6 @@ export function PuzzleOfTheDay({ puzzle }: PuzzleOfTheDayProps) {
             })}
           </span>
         </div>
-        {puzzle.category && (
-          <span className='puzzle-category'>{puzzle.category}</span>
-        )}
       </div>
 
       <div className='puzzle-content'>
