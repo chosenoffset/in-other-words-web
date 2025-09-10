@@ -1,18 +1,13 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useSignIn, useSignUp } from '@clerk/clerk-react'
-import { ClientOnly } from '@/components/ClientOnly.tsx'
 
 export const Route = createFileRoute('/sign-in')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return (
-    <ClientOnly>
-      <RegisterClient />
-    </ClientOnly>
-  )
+  return <RegisterClient />
 }
 
 function RegisterClient() {

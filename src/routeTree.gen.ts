@@ -14,6 +14,9 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCmsRouteImport } from './routes/_auth.cms'
+import { Route as AuthCmsIndexRouteImport } from './routes/_auth.cms.index'
+import { Route as AuthCmsPuzzlesRouteImport } from './routes/_auth.cms.puzzles'
+import { Route as AuthCmsPuzzlesPuzzleIdRouteImport } from './routes/_auth.cms.puzzles_.$puzzleId'
 
 const SignInSsoCallbackRoute = SignInSsoCallbackRouteImport.update({
   id: '/sign-in-sso-callback',
@@ -39,18 +42,38 @@ const AuthCmsRoute = AuthCmsRouteImport.update({
   path: '/cms',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthCmsIndexRoute = AuthCmsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthCmsRoute,
+} as any)
+const AuthCmsPuzzlesRoute = AuthCmsPuzzlesRouteImport.update({
+  id: '/puzzles',
+  path: '/puzzles',
+  getParentRoute: () => AuthCmsRoute,
+} as any)
+const AuthCmsPuzzlesPuzzleIdRoute = AuthCmsPuzzlesPuzzleIdRouteImport.update({
+  id: '/puzzles_/$puzzleId',
+  path: '/puzzles/$puzzleId',
+  getParentRoute: () => AuthCmsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
-  '/cms': typeof AuthCmsRoute
+  '/cms': typeof AuthCmsRouteWithChildren
+  '/cms/puzzles': typeof AuthCmsPuzzlesRoute
+  '/cms/': typeof AuthCmsIndexRoute
+  '/cms/puzzles/$puzzleId': typeof AuthCmsPuzzlesPuzzleIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
-  '/cms': typeof AuthCmsRoute
+  '/cms/puzzles': typeof AuthCmsPuzzlesRoute
+  '/cms': typeof AuthCmsIndexRoute
+  '/cms/puzzles/$puzzleId': typeof AuthCmsPuzzlesPuzzleIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -58,13 +81,29 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
-  '/_auth/cms': typeof AuthCmsRoute
+  '/_auth/cms': typeof AuthCmsRouteWithChildren
+  '/_auth/cms/puzzles': typeof AuthCmsPuzzlesRoute
+  '/_auth/cms/': typeof AuthCmsIndexRoute
+  '/_auth/cms/puzzles_/$puzzleId': typeof AuthCmsPuzzlesPuzzleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/sign-in-sso-callback' | '/cms'
+  fullPaths:
+    | '/'
+    | '/sign-in'
+    | '/sign-in-sso-callback'
+    | '/cms'
+    | '/cms/puzzles'
+    | '/cms/'
+    | '/cms/puzzles/$puzzleId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-in-sso-callback' | '/cms'
+  to:
+    | '/'
+    | '/sign-in'
+    | '/sign-in-sso-callback'
+    | '/cms/puzzles'
+    | '/cms'
+    | '/cms/puzzles/$puzzleId'
   id:
     | '__root__'
     | '/'
@@ -72,6 +111,9 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-in-sso-callback'
     | '/_auth/cms'
+    | '/_auth/cms/puzzles'
+    | '/_auth/cms/'
+    | '/_auth/cms/puzzles_/$puzzleId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,15 +160,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCmsRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/cms/': {
+      id: '/_auth/cms/'
+      path: '/'
+      fullPath: '/cms/'
+      preLoaderRoute: typeof AuthCmsIndexRouteImport
+      parentRoute: typeof AuthCmsRoute
+    }
+    '/_auth/cms/puzzles': {
+      id: '/_auth/cms/puzzles'
+      path: '/puzzles'
+      fullPath: '/cms/puzzles'
+      preLoaderRoute: typeof AuthCmsPuzzlesRouteImport
+      parentRoute: typeof AuthCmsRoute
+    }
+    '/_auth/cms/puzzles_/$puzzleId': {
+      id: '/_auth/cms/puzzles_/$puzzleId'
+      path: '/puzzles/$puzzleId'
+      fullPath: '/cms/puzzles/$puzzleId'
+      preLoaderRoute: typeof AuthCmsPuzzlesPuzzleIdRouteImport
+      parentRoute: typeof AuthCmsRoute
+    }
   }
 }
 
+interface AuthCmsRouteChildren {
+  AuthCmsPuzzlesRoute: typeof AuthCmsPuzzlesRoute
+  AuthCmsIndexRoute: typeof AuthCmsIndexRoute
+  AuthCmsPuzzlesPuzzleIdRoute: typeof AuthCmsPuzzlesPuzzleIdRoute
+}
+
+const AuthCmsRouteChildren: AuthCmsRouteChildren = {
+  AuthCmsPuzzlesRoute: AuthCmsPuzzlesRoute,
+  AuthCmsIndexRoute: AuthCmsIndexRoute,
+  AuthCmsPuzzlesPuzzleIdRoute: AuthCmsPuzzlesPuzzleIdRoute,
+}
+
+const AuthCmsRouteWithChildren =
+  AuthCmsRoute._addFileChildren(AuthCmsRouteChildren)
+
 interface AuthRouteChildren {
-  AuthCmsRoute: typeof AuthCmsRoute
+  AuthCmsRoute: typeof AuthCmsRouteWithChildren
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthCmsRoute: AuthCmsRoute,
+  AuthCmsRoute: AuthCmsRouteWithChildren,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

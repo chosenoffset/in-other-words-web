@@ -11,16 +11,21 @@ export const useSuperadminGetPuzzles = () => {
   return useQuery({
     queryKey: SUPERADMIN_PUZZLES_KEY,
     queryFn: async () => {
-      const token = await getToken()
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/superadmin/puzzles`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      return z.array(puzzleSchema).parse(response.data)
+      try {
+        const token = await getToken()
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/superadmin/puzzles`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        return z.array(puzzleSchema).parse(response.data)
+      } catch (error) {
+        console.error('Failed to get puzzles:', error)
+        return []
+      }
     },
   })
 }

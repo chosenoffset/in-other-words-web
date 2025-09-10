@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import { NavLinks, type AppNavLink } from './NavLinks'
-import { ClientOnly } from './ClientOnly'
 
 export function TopNav() {
   const links: AppNavLink[] = [{ to: '/', label: 'Home', exact: true }]
@@ -24,22 +23,20 @@ export function TopNav() {
           </div>
 
           <div className='nav-actions'>
-            <ClientOnly>
-              <SignedIn>
-                <UserButton
-                  appearance={{
-                    elements: {
-                      userButtonAvatarBox: { width: 32, height: 32 },
-                    },
-                  }}
-                />
-              </SignedIn>
-              <SignedOut>
-                <Link to='/sign-in' preload='intent' className='signin-button'>
-                  Sign in
-                </Link>
-              </SignedOut>
-            </ClientOnly>
+            <SignedIn>
+              <UserButton
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: { width: 32, height: 32 },
+                  },
+                }}
+              />
+            </SignedIn>
+            <SignedOut>
+              <Link to='/sign-in' preload='intent' className='signin-button'>
+                Sign in
+              </Link>
+            </SignedOut>
           </div>
         </div>
       </div>

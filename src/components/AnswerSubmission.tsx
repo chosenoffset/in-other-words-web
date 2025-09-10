@@ -1,10 +1,10 @@
 /** @jsxImportSource react */
 import { useEffect, useState } from 'react'
-import type { Puzzle, PuzzleResult } from '../types/puzzle'
-import { submitAnswer } from '../services/puzzleApi'
+import type { PuzzleQuestion, PuzzleResult } from '@/hooks/schemas'
+import { useSubmitAnswer } from '@/hooks/usePuzzles'
 
 interface AnswerSubmissionProps {
-  puzzle: Puzzle | null
+  puzzle: PuzzleQuestion | null
   onSubmissionResult?: (result: PuzzleResult) => void
 }
 
@@ -19,6 +19,7 @@ export function AnswerSubmission({
   )
   const [attemptCount, setAttemptCount] = useState(0)
   const [isHydrated, setIsHydrated] = useState(false)
+  const submitAnswer = useSubmitAnswer()
   useEffect(() => {
     console.log('AnswerSubmission hydrated!')
     setIsHydrated(true)
@@ -36,11 +37,21 @@ export function AnswerSubmission({
     try {
       setIsSubmitting(true)
 
-      const result = await submitAnswer({
+      const api = await submitAnswer.mutateAsync({
         puzzleId: puzzle.id,
         userAnswer: userAnswer.trim(),
         timestamp: new Date(),
       })
+
+      const result: PuzzleResult = {
+        isCorrect: api.isCorrect,
+        message: api.isCorrect
+          ? 'Correct! Well done!'
+          : 'Not quite right. Try again!',
+        puzzleId: api.puzzleId,
+        submittedAnswer: api.submittedAnswer,
+        hint: api.hint,
+      }
 
       setSubmissionResult(result)
       setAttemptCount(prev => prev + 1)
@@ -129,9 +140,7 @@ export function AnswerSubmission({
           {submissionResult.hint && submissionResult.hint.length > 0 && (
             <div className='hints-section'>
               <h4 className='hints-title'>Hints:</h4>
-              <ul className='hints-list'>
-                {submissionResult.hint}
-              </ul>
+              <ul className='hints-list'>{submissionResult.hint}</ul>
             </div>
           )}
 
