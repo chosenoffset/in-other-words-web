@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useSuperadminGetPuzzles } from '@/hooks/useSuperadminPuzzles'
+import {
+  useSuperadminGetPuzzles,
+  useSuperadminSoftDeletePuzzle,
+} from '@/hooks/useSuperadminPuzzles'
 import { Spinner } from '@/components/Spinner'
 
 export const Route = createFileRoute('/_auth/cms/puzzles')({
@@ -8,6 +11,7 @@ export const Route = createFileRoute('/_auth/cms/puzzles')({
 
 function PuzzlesList() {
   const { data, isLoading, isError, error, refetch } = useSuperadminGetPuzzles()
+  const softDelete = useSuperadminSoftDeletePuzzle()
 
   if (isLoading) {
     return (
@@ -66,12 +70,15 @@ function PuzzlesList() {
               <th scope='col'>Archived</th>
               <th scope='col'>Created</th>
               <th scope='col'>Updated</th>
+              <th scope='col' style={{ width: 1 }}>
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {puzzles.length === 0 ? (
               <tr>
-                <td colSpan={6} style={{ textAlign: 'center' }}>
+                <td colSpan={7} style={{ textAlign: 'center' }}>
                   No puzzles found
                 </td>
               </tr>
@@ -91,6 +98,18 @@ function PuzzlesList() {
                   <td>{p.archived ? 'Yes' : 'No'}</td>
                   <td>{new Date(p.createdAt).toLocaleString()}</td>
                   <td>{new Date(p.updatedAt).toLocaleString()}</td>
+                  <td>
+                    {!p.archived && (
+                      <button
+                        className='danger-button'
+                        onClick={() => softDelete.mutate(p.id)}
+                        disabled={softDelete.isPending}
+                        title='Archive puzzle'
+                      >
+                        {softDelete.isPending ? 'Archiving…' : 'Archive'}
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))
             )}
