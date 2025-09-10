@@ -2,17 +2,14 @@ import { createFileRoute } from '@tanstack/react-router'
 import { PuzzleOfTheDay } from '@/components/PuzzleOfTheDay.tsx'
 import { AnswerSubmission } from '@/components/AnswerSubmission.tsx'
 import '../styles.css'
-import { getTodaysPuzzle } from '@/services/puzzleApi.ts'
+import { useGetPuzzleOfTheDay } from '@/hooks/usePuzzles'
+import { Spinner } from '../components/Spinner'
 
 export const Route = createFileRoute('/')({
-  loader: async () => {
-    return await getTodaysPuzzle()
-  },
   component: Landing,
 })
 
 function Landing() {
-  const puzzle = Route.useLoaderData()
   return (
     <main className='container'>
       <header className='hero'>
@@ -23,12 +20,25 @@ function Landing() {
         </p>
       </header>
 
-      <section className='shell' aria-label='Game area placeholder'>
-        <div className='shell-inner'>
-          <PuzzleOfTheDay puzzle={puzzle} />
-          <AnswerSubmission puzzle={puzzle} />
-        </div>
-      </section>
+      <LandingClient />
     </main>
+  )
+}
+
+function LandingClient() {
+  const { data: puzzle, isLoading } = useGetPuzzleOfTheDay()
+
+  return (
+    <>
+      {isLoading && <Spinner aria-label='Loading puzzle' />}
+      {puzzle && (
+        <section className='shell' aria-label='Game area placeholder'>
+          <div className='shell-inner'>
+            <PuzzleOfTheDay puzzle={puzzle} />
+            <AnswerSubmission puzzle={puzzle} />
+          </div>
+        </section>
+      )}
+    </>
   )
 }

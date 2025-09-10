@@ -1,8 +1,7 @@
-/** @jsxImportSource react */
-import type { Puzzle } from '../types/puzzle'
+import type { PuzzleQuestion } from '@/hooks/schemas'
 
 interface PuzzleOfTheDayProps {
-  puzzle: Puzzle
+  puzzle: PuzzleQuestion
 }
 
 export function PuzzleOfTheDay({ puzzle }: PuzzleOfTheDayProps) {
