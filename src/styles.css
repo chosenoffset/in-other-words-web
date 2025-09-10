@@ -296,6 +296,26 @@ a {
   background: #0284c7;
 }
 
+/* Destructive actions */
+.danger-button {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.danger-button:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.danger-button:disabled {
+  background: #fca5a5;
+  cursor: not-allowed;
+}
+
 .puzzle-header {
   margin-bottom: 24px;
 }

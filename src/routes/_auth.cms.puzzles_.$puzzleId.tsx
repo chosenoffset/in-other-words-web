@@ -10,6 +10,8 @@ import {
   useSuperadminGetPuzzle,
   useSuperadminCreatePuzzle,
   useSuperadminUpdatePuzzle,
+  useSuperadminSoftDeletePuzzle,
+  useSuperadminHardDeletePuzzle,
 } from '@/hooks/useSuperadminPuzzles'
 
 export const Route = createFileRoute('/_auth/cms/puzzles_/$puzzleId')({
@@ -45,6 +47,8 @@ function PuzzleDetailPage() {
 
   const createMutation = useSuperadminCreatePuzzle()
   const updateMutation = useSuperadminUpdatePuzzle()
+  const softDelete = useSuperadminSoftDeletePuzzle()
+  const hardDelete = useSuperadminHardDeletePuzzle()
 
   const initialValues: FormState = useMemo(() => {
     if (!isNew && existingPuzzle) {
@@ -225,7 +229,7 @@ function PuzzleDetailPage() {
           className='flex-container'
           style={{ marginTop: 16, justifyContent: 'space-between' }}
         >
-          <div className='flex-container' style={{ gap: 16 }}>
+          <div className='flex-container' style={{ gap: 16, flexWrap: 'wrap' }}>
             <label
               className='answer-label'
               style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
@@ -266,6 +270,30 @@ function PuzzleDetailPage() {
           </button>
         </div>
       </form>
+
+      {!isNew && (
+        <div className='shell' style={{ padding: 16, marginTop: 16 }}>
+          <div
+            className='flex-container'
+            style={{ gap: 12, justifyContent: 'flex-end' }}
+          >
+            <button
+              type='button'
+              className='danger-button'
+              onClick={() =>
+                existingPuzzle &&
+                hardDelete.mutate(existingPuzzle.id, {
+                  onSuccess: () => navigate({ to: '/cms/puzzles' }),
+                })
+              }
+              disabled={hardDelete.isPending}
+              title='HARD DELETE – cannot be undone'
+            >
+              {hardDelete.isPending ? 'Deleting…' : 'HARD DELETE'}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
