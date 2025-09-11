@@ -4,12 +4,27 @@ import { AnswerSubmission } from '@/components/AnswerSubmission.tsx'
 import '../styles.css'
 import { useGetPuzzleOfTheDay } from '@/hooks/usePuzzles'
 import { Spinner } from '../components/Spinner'
+import { getAttemptStatus } from '@/services/puzzleApi.ts'
 
 export const Route = createFileRoute('/')({
+  loader: async () => {
+    const puzzle = await getTodaysPuzzle()
+    let attemptStatus = null
+
+    try {
+      attemptStatus = await getAttemptStatus(puzzle.id)
+    } catch (error) {
+      // If attempt status fails, continue without it
+      console.warn('Could not fetch attempt status:', error)
+    }
+
+    return { puzzle, attemptStatus }
+  },
   component: Landing,
 })
 
 function Landing() {
+  const { puzzle, attemptStatus } = Route.useLoaderData()
   return (
     <main className='container'>
       <header className='hero'>
@@ -35,7 +50,7 @@ function LandingClient() {
         <section className='shell' aria-label='Game area placeholder'>
           <div className='shell-inner'>
             <PuzzleOfTheDay puzzle={puzzle} />
-            <AnswerSubmission puzzle={puzzle} />
+            <AnswerSubmission puzzle={puzzle} initialAttemptStatus={attemptStatus} />
           </div>
         </section>
       )}
