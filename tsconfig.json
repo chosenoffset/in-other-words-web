@@ -2,7 +2,8 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "../../../.cache/JetBrains/IntelliJIdea2025.2/javascript/typings/express/4.17.23/node_modules/@types/node/module.d.ts"
+    "../../../.cache/JetBrains/IntelliJIdea2025.2/javascript/typings/express/4.17.23/node_modules/@types/node/module.d.ts",
+    "vite.config.js"
   ],
   "compilerOptions": {
     "target": "ES2022",
