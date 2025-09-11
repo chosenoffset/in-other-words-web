@@ -3,18 +3,13 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useClerk, useUser } from '@clerk/clerk-react'
 import { useCreateUser } from '@/hooks/useRegister.ts'
 import { Spinner } from '@/components/Spinner.tsx'
-import { ClientOnly } from '@/components/ClientOnly.tsx'
 
 export const Route = createFileRoute('/sign-in-sso-callback')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return (
-    <ClientOnly>
-      <RegisterSsoCallbackClient />
-    </ClientOnly>
-  )
+  return <RegisterSsoCallbackClient />
 }
 
 function RegisterSsoCallbackClient() {

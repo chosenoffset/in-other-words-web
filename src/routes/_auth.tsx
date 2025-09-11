@@ -1,9 +1,4 @@
-import {
-  createFileRoute,
-  Outlet,
-  notFound,
-  ClientOnly,
-} from '@tanstack/react-router'
+import { createFileRoute, Outlet, notFound } from '@tanstack/react-router'
 import { useUser } from '@clerk/clerk-react'
 import { getIsClerkIdSuperAdmin } from '@/hooks/useUser.ts'
 import { useEffect } from 'react'
@@ -14,11 +9,7 @@ export const Route = createFileRoute('/_auth')({
 })
 
 function AuthGate() {
-  return (
-    <ClientOnly>
-      <AuthGateClient />
-    </ClientOnly>
-  )
+  return <AuthGateClient />
 }
 
 function AuthGateClient() {
