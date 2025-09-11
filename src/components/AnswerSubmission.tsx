@@ -1,23 +1,27 @@
 /** @jsxImportSource react */
 import { useEffect, useState } from 'react'
-import type { PuzzleQuestion, PuzzleResult } from '@/hooks/schemas'
+import type { PuzzleQuestion, PuzzleResult, AttemptStatus } from '@/hooks/schemas'
 import { useSubmitAnswer } from '@/hooks/usePuzzles'
 
 interface AnswerSubmissionProps {
   puzzle: PuzzleQuestion | null
   onSubmissionResult?: (result: PuzzleResult) => void
+  initialAttemptStatus?: AttemptStatus | null
 }
 
 export function AnswerSubmission({
   puzzle,
   onSubmissionResult,
+  initialAttemptStatus,
 }: AnswerSubmissionProps) {
   const [userAnswer, setUserAnswer] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submissionResult, setSubmissionResult] = useState<PuzzleResult | null>(
     null
   )
-  const [attemptCount, setAttemptCount] = useState(0)
+  const [attemptStatus, setAttemptStatus] = useState<AttemptStatus | null>(
+    initialAttemptStatus || null
+  )
   const [isHydrated, setIsHydrated] = useState(false)
   const submitAnswer = useSubmitAnswer()
   useEffect(() => {
@@ -31,6 +35,15 @@ export function AnswerSubmission({
     e.preventDefault()
 
     if (!puzzle || !userAnswer.trim() || isSubmitting) {
+      return
+    }
+
+    // Check if user has remaining guesses
+    if (attemptStatus && attemptStatus.remainingGuesses <= 0) {
+      setSubmissionResult({
+        isCorrect: false,
+        message: 'No more guesses remaining. Try again tomorrow!',
+      })
       return
     }
 
@@ -54,8 +67,16 @@ export function AnswerSubmission({
       }
 
       setSubmissionResult(result)
-      setAttemptCount(prev => prev + 1)
       onSubmissionResult?.(result)
+
+      // Update attempt status from API response
+      if (result.remainingGuesses !== undefined && result.maxGuesses !== undefined) {
+        setAttemptStatus({
+          attemptCount: (result.maxGuesses || 0) - (result.remainingGuesses || 0),
+          remainingGuesses: result.remainingGuesses,
+          maxGuesses: result.maxGuesses,
+        })
+      }
 
       // Clear input if correct
       if (result.isCorrect) {
@@ -106,7 +127,7 @@ export function AnswerSubmission({
               onChange={handleInputChange}
               placeholder='Enter your answer...'
               className='answer-input'
-              disabled={isSubmitting || submissionResult?.isCorrect}
+              disabled={isSubmitting || submissionResult?.isCorrect === true}
               autoComplete='off'
             />
             <button
@@ -114,7 +135,8 @@ export function AnswerSubmission({
               disabled={
                 !userAnswer.trim() ||
                 isSubmitting ||
-                submissionResult?.isCorrect
+                submissionResult?.isCorrect ||
+                (attemptStatus && attemptStatus.remainingGuesses <= 0)
               }
               className='submit-button'
             >
@@ -147,8 +169,8 @@ export function AnswerSubmission({
           {submissionResult.isCorrect && (
             <div className='success-actions'>
               <p className='completion-text'>
-                Puzzle completed in {attemptCount} attempt
-                {attemptCount !== 1 ? 's' : ''}!
+                Puzzle completed in {attemptStatus ? attemptStatus.attemptCount : 1} attempt
+                {(attemptStatus ? attemptStatus.attemptCount : 1) !== 1 ? 's' : ''}!
               </p>
               <p className='next-puzzle-text muted'>
                 Come back tomorrow for the next puzzle!
@@ -158,9 +180,17 @@ export function AnswerSubmission({
         </div>
       )}
 
-      {attemptCount > 0 && !submissionResult?.isCorrect && (
+      {attemptStatus && attemptStatus.attemptCount > 0 && (
         <div className='attempt-counter'>
-          <p className='muted'>Attempts: {attemptCount}</p>
+          <p className='muted'>
+            Attempts: {attemptStatus.attemptCount}/{attemptStatus.maxGuesses}
+            {attemptStatus.remainingGuesses > 0 && (
+              <> • {attemptStatus.remainingGuesses} remaining</>
+            )}
+            {attemptStatus.remainingGuesses === 0 && !submissionResult?.isCorrect && (
+              <> • No attempts remaining</>
+            )}
+          </p>
         </div>
       )}
     </div>
