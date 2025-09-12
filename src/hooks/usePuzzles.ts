@@ -35,12 +35,19 @@ export const useGetPublishedPuzzles = () => {
 }
 
 export const useGetPuzzleOfTheDay = () => {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['puzzleOfTheDay'],
     queryFn: async () => {
       try {
+        const token = await getToken()
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/public/puzzle-of-the-day`
+          `${import.meta.env.VITE_API_URL}/public/puzzle-of-the-day`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         )
         return puzzleQuestionSchema.parse(response.data)
       } catch (error) {
@@ -51,15 +58,48 @@ export const useGetPuzzleOfTheDay = () => {
   })
 }
 
+export const useGetAttemptStatus = (puzzleId: string | undefined) => {
+  const { getToken } = useAuth()
+  return useQuery({
+    queryKey: ['attemptStatus', puzzleId],
+    queryFn: async () => {
+      if (!puzzleId) return null
+      try {
+        const token = await getToken()
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/public/puzzle-of-the-day/attempts/${puzzleId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        return response.data.data
+      } catch (error) {
+        console.error('Failed to get attempt status:', error)
+        return null
+      }
+    },
+    enabled: !!puzzleId,
+  })
+}
+
 export const useSubmitAnswer = () => {
+  const { getToken } = useAuth()
   return useMutation<SubmitAnswerResponse['data'], Error, PuzzleSubmission>({
     mutationKey: ['submitAnswer'],
     mutationFn: async (submission: PuzzleSubmission) => {
+      const token = await getToken()
       const { userAnswer, puzzleId } = submission
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/public/puzzle-of-the-day/submit/${puzzleId}`,
-          { answer: userAnswer }
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            answer: userAnswer
+          }
         )
 
         const parsed = submitAnswerResponseSchema.parse(response.data)

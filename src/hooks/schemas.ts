@@ -49,9 +49,19 @@ export const puzzleResultSchema = z.object({
   hint: z.string().optional(),
   puzzleId: z.string().optional(),
   submittedAnswer: z.string().optional(),
+  remainingGuesses: z.number().optional(),
+  maxGuesses: z.number().optional(),
 })
 
 export type PuzzleResult = z.infer<typeof puzzleResultSchema>
+
+export const attemptStatusSchema = z.object({
+  attemptCount: z.number(),
+  remainingGuesses: z.number(),
+  maxGuesses: z.number(),
+})
+
+export type AttemptStatus = z.infer<typeof attemptStatusSchema>
 
 // Raw API response for submitAnswer; UI derives messages from this shape
 export const submitAnswerResponseSchema = z.object({
@@ -60,6 +70,8 @@ export const submitAnswerResponseSchema = z.object({
     puzzleId: z.string().optional(),
     submittedAnswer: z.string().optional(),
     hint: z.string().optional(),
+    remainingGuesses: z.number().optional(),
+    maxGuesses: z.number().optional(),
   }),
 })
 
