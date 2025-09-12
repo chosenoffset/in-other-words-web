@@ -10,7 +10,6 @@ import {
   useSuperadminGetPuzzle,
   useSuperadminCreatePuzzle,
   useSuperadminUpdatePuzzle,
-  useSuperadminSoftDeletePuzzle,
   useSuperadminHardDeletePuzzle,
 } from '@/hooks/useSuperadminPuzzles'
 
@@ -47,7 +46,6 @@ function PuzzleDetailPage() {
 
   const createMutation = useSuperadminCreatePuzzle()
   const updateMutation = useSuperadminUpdatePuzzle()
-  const softDelete = useSuperadminSoftDeletePuzzle()
   const hardDelete = useSuperadminHardDeletePuzzle()
 
   const initialValues: FormState = useMemo(() => {
