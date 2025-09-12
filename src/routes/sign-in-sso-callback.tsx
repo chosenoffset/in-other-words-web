@@ -3,7 +3,6 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useClerk, useUser, useAuth } from '@clerk/clerk-react'
 import { useCreateUser } from '@/hooks/useRegister.ts'
 import { Spinner } from '@/components/Spinner.tsx'
-import { ClientOnly } from '@/components/ClientOnly.tsx'
 import { convertAnonymousAttempts } from '@/services/puzzleApi.ts'
 
 export const Route = createFileRoute('/sign-in-sso-callback')({
