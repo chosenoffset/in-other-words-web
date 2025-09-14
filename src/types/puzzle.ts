@@ -2,6 +2,7 @@ export interface Puzzle {
     id: string
     question: string
     hints?: []
+    category: 'MUSIC' | 'MOVIES_TV' | 'GAMES' | 'SPORTS' | 'BOOKS' | 'UNCATEGORIZED'
     userFingerprint?: string
 }
 

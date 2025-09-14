@@ -1,9 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { PuzzleOfTheDay } from '@/components/PuzzleOfTheDay.tsx'
 import { AnswerSubmission } from '@/components/AnswerSubmission.tsx'
+import { HintsSection } from '@/components/HintsSection.tsx'
 import '../styles.css'
 import { useGetPuzzleOfTheDay, useGetAttemptStatus } from '@/hooks/usePuzzles'
 import { Spinner } from '../components/Spinner'
+import { useState } from 'react'
+import type { PuzzleResult } from '@/hooks/schemas'
 
 export const Route = createFileRoute('/')({
   component: Landing,
@@ -12,6 +15,13 @@ export const Route = createFileRoute('/')({
 function Landing() {
   const { data: puzzle, isLoading: puzzleLoading } = useGetPuzzleOfTheDay()
   const { data: attemptStatus, isLoading: attemptLoading } = useGetAttemptStatus(puzzle?.id)
+  const [hasIncorrectGuess, setHasIncorrectGuess] = useState(false)
+
+  const handleSubmissionResult = (result: PuzzleResult) => {
+    if (!result.isCorrect) {
+      setHasIncorrectGuess(true)
+    }
+  }
 
   return (
     <main className='container'>
@@ -27,8 +37,17 @@ function Landing() {
       {puzzle && (
         <section className='shell' aria-label='Game area placeholder'>
           <div className='shell-inner'>
-            <PuzzleOfTheDay puzzle={puzzle} />
-            <AnswerSubmission puzzle={puzzle} initialAttemptStatus={attemptStatus} />
+            <div className='puzzle-main-area'>
+              <PuzzleOfTheDay puzzle={puzzle} />
+              <AnswerSubmission
+                puzzle={puzzle}
+                initialAttemptStatus={attemptStatus}
+                onSubmissionResult={handleSubmissionResult}
+              />
+            </div>
+            <div className='puzzle-sidebar'>
+              <HintsSection puzzle={puzzle} hasIncorrectGuess={hasIncorrectGuess} />
+            </div>
           </div>
         </section>
       )}

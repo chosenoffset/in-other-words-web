@@ -16,6 +16,7 @@ export const puzzleSchema = z.object({
   question: z.string(),
   answer: z.string(),
   hints: z.array(z.string()).default([]),
+  category: z.enum(['MUSIC', 'MOVIES_TV', 'GAMES', 'SPORTS', 'BOOKS', 'UNCATEGORIZED']),
   displayDate: z.string().nullable().optional(),
   displayOrder: z.number().optional(),
 
@@ -31,6 +32,7 @@ export const puzzleQuestionSchema = z.object({
   id: z.string(),
   question: z.string(),
   hints: z.array(z.string()).optional(),
+  category: z.enum(['MUSIC', 'MOVIES_TV', 'GAMES', 'SPORTS', 'BOOKS', 'UNCATEGORIZED']),
 })
 
 export type PuzzleQuestion = z.infer<typeof puzzleQuestionSchema>
