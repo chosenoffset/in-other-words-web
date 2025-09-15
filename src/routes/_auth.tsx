@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { Spinner } from '@/components/Spinner'
 
 export const Route = createFileRoute('/_auth')({
-  component: AuthGateClient,
+  component: AuthGate,
 })
 
 function AuthGate() {
