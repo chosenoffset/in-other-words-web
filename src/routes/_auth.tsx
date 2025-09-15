@@ -1,8 +1,4 @@
-import {
-  createFileRoute,
-  Outlet,
-  notFound,
-} from '@tanstack/react-router'
+import { createFileRoute, Outlet, notFound } from '@tanstack/react-router'
 import { useUser } from '@clerk/clerk-react'
 import { getIsClerkIdSuperAdmin } from '@/hooks/useUser.ts'
 import { useEffect } from 'react'
@@ -11,6 +7,10 @@ import { Spinner } from '@/components/Spinner'
 export const Route = createFileRoute('/_auth')({
   component: AuthGateClient,
 })
+
+function AuthGate() {
+  return <AuthGateClient />
+}
 
 function AuthGateClient() {
   const { user, isLoaded } = useUser()

@@ -9,6 +9,9 @@ export const Route = createFileRoute('/sign-in-sso-callback')({
   component: RegisterSsoCallbackClient,
 })
 
+function RouteComponent() {
+  return <RegisterSsoCallbackClient />
+}
 function RegisterSsoCallbackClient() {
   const { handleRedirectCallback } = useClerk()
   const { user, isLoaded, isSignedIn } = useUser()
