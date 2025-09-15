@@ -6,7 +6,7 @@ import { Spinner } from '@/components/Spinner.tsx'
 import { convertAnonymousAttempts } from '@/services/puzzleApi.ts'
 
 export const Route = createFileRoute('/sign-in-sso-callback')({
-  component: RegisterSsoCallbackClient,
+  component: RouteComponent,
 })
 
 function RouteComponent() {
