@@ -78,3 +78,26 @@ export const submitAnswerResponseSchema = z.object({
 })
 
 export type SubmitAnswerResponse = z.infer<typeof submitAnswerResponseSchema>
+
+export const playerStatsSchema = z.object({
+  totalGames: z.number(),
+  gamesWon: z.number(),
+  winRate: z.number(),
+  currentStreak: z.number(),
+  longestStreak: z.number(),
+  averageGuesses: z.number(),
+  averageSolveTimeMs: z.number(),
+  fastestSolveMs: z.number(),
+  lastPlayedAt: z.string().nullable(),
+})
+
+export type PlayerStats = z.infer<typeof playerStatsSchema>
+
+export const giveUpResponseSchema = z.object({
+  success: z.boolean(),
+  puzzleId: z.string(),
+  gaveUp: z.boolean(),
+  message: z.string(),
+})
+
+export type GiveUpResponse = z.infer<typeof giveUpResponseSchema>

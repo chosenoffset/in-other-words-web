@@ -3,7 +3,10 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import { NavLinks, type AppNavLink } from './NavLinks'
 
 export function TopNav() {
-  const links: AppNavLink[] = [{ to: '/', label: 'Home', exact: true }]
+  const links: AppNavLink[] = [
+    { to: '/', label: 'Home', exact: true },
+    { to: '/profile', label: 'Profile', exact: true }
+  ]
 
   return (
     <nav className='topnav' role='navigation' aria-label='Primary'>

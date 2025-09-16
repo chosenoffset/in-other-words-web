@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignInSsoCallbackRouteImport } from './routes/sign-in-sso-callback'
 import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCmsRouteImport } from './routes/_auth.cms'
@@ -26,6 +27,11 @@ const SignInSsoCallbackRoute = SignInSsoCallbackRouteImport.update({
 const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -60,6 +66,7 @@ const AuthCmsPuzzlesPuzzleIdRoute = AuthCmsPuzzlesPuzzleIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
   '/cms': typeof AuthCmsRouteWithChildren
@@ -69,6 +76,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
   '/cms/puzzles': typeof AuthCmsPuzzlesRoute
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
   '/_auth/cms': typeof AuthCmsRouteWithChildren
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/profile'
     | '/sign-in'
     | '/sign-in-sso-callback'
     | '/cms'
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/profile'
     | '/sign-in'
     | '/sign-in-sso-callback'
     | '/cms/puzzles'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
+    | '/profile'
     | '/sign-in'
     | '/sign-in-sso-callback'
     | '/_auth/cms'
@@ -119,6 +131,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
+  ProfileRoute: typeof ProfileRoute
   SignInRoute: typeof SignInRoute
   SignInSsoCallbackRoute: typeof SignInSsoCallbackRoute
 }
@@ -137,6 +150,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
@@ -212,6 +232,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
+  ProfileRoute: ProfileRoute,
   SignInRoute: SignInRoute,
   SignInSsoCallbackRoute: SignInSsoCallbackRoute,
 }

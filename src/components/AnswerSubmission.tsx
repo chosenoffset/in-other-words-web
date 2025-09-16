@@ -6,6 +6,7 @@ import type {
   PuzzleResult,
 } from '@/hooks/schemas'
 import { useSubmitAnswer } from '@/hooks/usePuzzles'
+import { GiveUpButton } from './GiveUpButton'
 
 interface AnswerSubmissionProps {
   puzzle: PuzzleQuestion | null
@@ -112,6 +113,16 @@ export function AnswerSubmission({
     }
   }
 
+  const handleGiveUp = () => {
+    // Mark as gave up with a special result
+    const giveUpResult: PuzzleResult = {
+      isCorrect: false,
+      message: 'You gave up on this puzzle. The answer will be revealed.',
+    }
+    setSubmissionResult(giveUpResult)
+    onSubmissionResult?.(giveUpResult)
+  }
+
   if (!puzzle) {
     return (
       <div className='answer-container'>
@@ -210,6 +221,17 @@ export function AnswerSubmission({
           )}
         </p>
       </div>
+
+      {/* Only show give up button if puzzle is not completed and user has made at least one attempt */}
+      {attemptStatus &&
+       attemptStatus.attemptCount > 0 &&
+       !submissionResult?.isCorrect && (
+        <GiveUpButton
+          puzzleId={puzzle.id}
+          disabled={isSubmitting}
+          onGiveUp={handleGiveUp}
+        />
+      )}
     </div>
   )
 }

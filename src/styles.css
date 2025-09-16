@@ -788,3 +788,250 @@ a {
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', monospace;
 }
+
+/* Player Statistics */
+.stats-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow:
+    0 1px 2px rgba(2, 8, 23, 0.04),
+    0 2px 6px rgba(2, 8, 23, 0.06);
+}
+
+.stats-content h3 {
+  margin: 0 0 20px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.stats-unauthenticated {
+  text-align: center;
+  padding: 20px;
+}
+
+.stats-unauthenticated h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.stats-unauthenticated p {
+  margin: 0 0 20px 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.stats-error {
+  padding: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 16px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.stat-item-wide {
+  grid-column: 1 / -1;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-item-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Give Up Button */
+.give-up-container {
+  margin-top: 16px;
+}
+
+.give-up-unauthenticated {
+  text-align: center;
+  padding: 12px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.signin-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.signin-link:hover {
+  text-decoration: underline;
+}
+
+.give-up-button {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.give-up-button:hover:not(:disabled) {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.give-up-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.give-up-confirmation {
+  padding: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+.give-up-warning {
+  margin: 0 0 16px 0;
+  color: #dc2626;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.give-up-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.secondary-button {
+  background: var(--background);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: var(--card);
+}
+
+.secondary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.give-up-error {
+  margin-top: 12px;
+  padding: 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+/* Profile Page */
+.profile-unauthenticated {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.profile-unauthenticated h1 {
+  margin: 0 0 16px 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.profile-unauthenticated p {
+  margin: 0 0 24px 0;
+  color: var(--muted);
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.profile-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-header {
+  margin-bottom: 32px;
+}
+
+.profile-header h1 {
+  margin: 0 0 16px 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.user-info {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.user-name {
+  margin: 0 0 4px 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.user-email {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.profile-stats {
+  margin-top: 24px;
+}
+
+.sidebar-stats {
+  margin-top: 24px;
+}
