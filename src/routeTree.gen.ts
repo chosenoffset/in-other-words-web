@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignInSsoCallbackRouteImport } from './routes/sign-in-sso-callback'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as CheckoutSuccessRouteImport } from './routes/checkout-success'
+import { Route as CheckoutCancelRouteImport } from './routes/checkout-cancel'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCmsRouteImport } from './routes/_auth.cms'
@@ -32,6 +34,16 @@ const SignInRoute = SignInRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
+  id: '/checkout-success',
+  path: '/checkout-success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutCancelRoute = CheckoutCancelRouteImport.update({
+  id: '/checkout-cancel',
+  path: '/checkout-cancel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -66,6 +78,8 @@ const AuthCmsPuzzlesPuzzleIdRoute = AuthCmsPuzzlesPuzzleIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/checkout-cancel': typeof CheckoutCancelRoute
+  '/checkout-success': typeof CheckoutSuccessRoute
   '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
@@ -76,6 +90,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/checkout-cancel': typeof CheckoutCancelRoute
+  '/checkout-success': typeof CheckoutSuccessRoute
   '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
@@ -87,6 +103,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
+  '/checkout-cancel': typeof CheckoutCancelRoute
+  '/checkout-success': typeof CheckoutSuccessRoute
   '/profile': typeof ProfileRoute
   '/sign-in': typeof SignInRoute
   '/sign-in-sso-callback': typeof SignInSsoCallbackRoute
@@ -99,6 +117,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/checkout-cancel'
+    | '/checkout-success'
     | '/profile'
     | '/sign-in'
     | '/sign-in-sso-callback'
@@ -109,6 +129,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/checkout-cancel'
+    | '/checkout-success'
     | '/profile'
     | '/sign-in'
     | '/sign-in-sso-callback'
@@ -119,6 +141,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
+    | '/checkout-cancel'
+    | '/checkout-success'
     | '/profile'
     | '/sign-in'
     | '/sign-in-sso-callback'
@@ -131,6 +155,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
+  CheckoutCancelRoute: typeof CheckoutCancelRoute
+  CheckoutSuccessRoute: typeof CheckoutSuccessRoute
   ProfileRoute: typeof ProfileRoute
   SignInRoute: typeof SignInRoute
   SignInSsoCallbackRoute: typeof SignInSsoCallbackRoute
@@ -157,6 +183,20 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout-success': {
+      id: '/checkout-success'
+      path: '/checkout-success'
+      fullPath: '/checkout-success'
+      preLoaderRoute: typeof CheckoutSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout-cancel': {
+      id: '/checkout-cancel'
+      path: '/checkout-cancel'
+      fullPath: '/checkout-cancel'
+      preLoaderRoute: typeof CheckoutCancelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
@@ -232,6 +272,8 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
+  CheckoutCancelRoute: CheckoutCancelRoute,
+  CheckoutSuccessRoute: CheckoutSuccessRoute,
   ProfileRoute: ProfileRoute,
   SignInRoute: SignInRoute,
   SignInSsoCallbackRoute: SignInSsoCallbackRoute,
