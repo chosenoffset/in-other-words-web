@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import { NavLinks, type AppNavLink } from './NavLinks'
+import { Button } from '@/components/ui'
 
 export function TopNav() {
   const links: AppNavLink[] = [
@@ -36,9 +37,11 @@ export function TopNav() {
               />
             </SignedIn>
             <SignedOut>
-              <Link to='/sign-in' preload='intent' className='signin-button'>
-                Sign in
-              </Link>
+              <Button asChild variant="signin" size="sm">
+                <Link to='/sign-in' preload='intent'>
+                  Sign in
+                </Link>
+              </Button>
             </SignedOut>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { PuzzleQuestion } from '@/hooks/schemas'
+import { Button } from '@/components/ui'
 
 interface HintsSectionProps {
   puzzle: PuzzleQuestion
@@ -62,12 +63,12 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
               {getCategoryIcon(puzzle.category)} {getCategoryDisplayName(puzzle.category)}
             </div>
           ) : (
-            <button
-              className="hint-reveal-button"
+            <Button
+              variant="hint"
               onClick={revealCategory}
             >
               Click to reveal category
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -85,8 +86,8 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
                     {index + 1}. {hint}
                   </div>
                 ) : (
-                  <button
-                    className="hint-reveal-button"
+                  <Button
+                    variant="hint"
                     onClick={() => revealHint(index)}
                     disabled={!hasIncorrectGuess}
                     title={!hasIncorrectGuess ? "Available after first incorrect guess" : ""}
@@ -95,7 +96,7 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
                       ? `Hint ${index + 1} (locked)`
                       : `Click to reveal hint ${index + 1}`
                     }
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>

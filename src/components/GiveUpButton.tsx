@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useGiveUpPuzzle } from '@/hooks/usePuzzles'
 import { SignedIn, SignedOut } from '@clerk/clerk-react'
 import { Link } from '@tanstack/react-router'
+import { Button } from '@/components/ui'
 
 interface GiveUpButtonProps {
   puzzleId: string
@@ -39,36 +40,37 @@ export function GiveUpButton({ puzzleId, disabled = false, onGiveUp }: GiveUpBut
 
       <SignedIn>
         {!showConfirmation ? (
-          <button
+          <Button
             type="button"
             onClick={() => setShowConfirmation(true)}
             disabled={disabled || giveUpMutation.isPending}
-            className="give-up-button"
+            variant="ghost"
           >
             Give Up
-          </button>
+          </Button>
         ) : (
           <div className="give-up-confirmation">
             <p className="give-up-warning">
               Are you sure you want to give up? This will reveal the answer and end your current streak.
             </p>
             <div className="give-up-actions">
-              <button
+              <Button
                 type="button"
                 onClick={handleGiveUp}
                 disabled={giveUpMutation.isPending}
-                className="danger-button"
+                loading={giveUpMutation.isPending}
+                variant="destructive"
               >
                 {giveUpMutation.isPending ? 'Giving up...' : 'Yes, Give Up'}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 onClick={handleCancel}
                 disabled={giveUpMutation.isPending}
-                className="secondary-button"
+                variant="secondary"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </div>
         )}

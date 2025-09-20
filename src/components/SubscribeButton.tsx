@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { SignedIn, SignedOut } from '@clerk/clerk-react'
 import { Link } from '@tanstack/react-router'
 import { useCreateSubscription } from '@/hooks/useStripe'
+import { Button } from '@/components/ui'
 
 type SubscribeButtonProps = {
   className?: string
@@ -25,7 +26,6 @@ export function SubscribeButton({
       window.location.assign(url)
     } catch (err) {
       // Swallow here; UI should decide how to surface errors where used
-      // eslint-disable-next-line no-console
       console.error('Failed to create subscription', err)
     }
   }, [createSubscription, onRedirect])
@@ -33,21 +33,24 @@ export function SubscribeButton({
   return (
     <div className={className}>
       <SignedOut>
-        <Link to='/sign-in' className='primary-button'>
-          Sign in to subscribe
-        </Link>
+        <Button asChild variant="primary">
+          <Link to='/sign-in'>
+            Sign in to subscribe
+          </Link>
+        </Button>
       </SignedOut>
       <SignedIn>
-        <button
+        <Button
           type='button'
           onClick={handleClick}
           disabled={disabled || createSubscription.isPending}
-          className='primary-button'
+          loading={createSubscription.isPending}
+          variant="primary"
         >
           {createSubscription.isPending
             ? 'Redirecting…'
             : children || 'Subscribe'}
-        </button>
+        </Button>
       </SignedIn>
     </div>
   )

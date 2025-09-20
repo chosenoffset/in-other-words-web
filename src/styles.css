@@ -1,5 +1,7 @@
+@import "tailwindcss";
+
+/* Additional body styling on top of Tailwind's preflight */
 body {
-  margin: 0;
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -67,19 +69,6 @@ body {
   gap: 10px;
 }
 
-.signin-button {
-  padding: 8px 12px;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.signin-button:hover {
-  background: #0284c7;
-}
 
 .nav-toggle {
   appearance: none;
@@ -180,11 +169,6 @@ a {
   text-decoration: none;
 }
 
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 56px 20px;
-}
 
 .hero {
   text-align: center;
@@ -205,27 +189,6 @@ a {
   max-width: 44ch;
 }
 
-.shell {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  min-height: 260px;
-  display: grid;
-  place-items: center;
-  box-shadow:
-    0 1px 2px rgba(2, 8, 23, 0.04),
-    0 2px 6px rgba(2, 8, 23, 0.06);
-}
-
-.shell-inner {
-  text-align: center;
-  padding: 40px 20px;
-  display: flex;
-  gap: 40px;
-  align-items: flex-start;
-  justify-content: center;
-  flex-wrap: wrap;
-}
 
 .shell-title {
   margin: 0 0 6px 0;
@@ -287,39 +250,7 @@ a {
   margin-bottom: 16px;
 }
 
-.retry-button {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.875rem;
-}
 
-.retry-button:hover {
-  background: #0284c7;
-}
-
-/* Destructive actions */
-.danger-button {
-  background: #dc2626;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.875rem;
-}
-
-.danger-button:hover:not(:disabled) {
-  background: #b91c1c;
-}
-
-.danger-button:disabled {
-  background: #fca5a5;
-  cursor: not-allowed;
-}
 
 .puzzle-header {
   margin-bottom: 24px;
@@ -447,70 +378,7 @@ a {
   cursor: not-allowed;
 }
 
-.submit-button {
-  padding: 12px 24px;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
-}
 
-.submit-button:hover:not(:disabled) {
-  background: #0284c7;
-}
-
-.submit-button:disabled {
-  background: #94a3b8;
-  cursor: not-allowed;
-}
-
-/* Primary Button (used by SubscribeButton and other CTAs) */
-.primary-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: var(--accent);
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    background 0.15s ease;
-  box-shadow:
-    0 8px 20px rgba(14, 165, 233, 0.25),
-    0 2px 6px rgba(2, 8, 23, 0.06);
-}
-
-.primary-button:hover:not(:disabled) {
-  background: #0284c7;
-  transform: translateY(-1px);
-  box-shadow:
-    0 10px 24px rgba(14, 165, 233, 0.35),
-    0 4px 8px rgba(2, 8, 23, 0.08);
-}
-
-.primary-button:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow:
-    0 6px 14px rgba(14, 165, 233, 0.25),
-    0 2px 6px rgba(2, 8, 23, 0.06);
-}
-
-.primary-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
 
 /* Submission Result Styles */
 .submission-result {
@@ -608,9 +476,6 @@ a {
 
 /* Responsive Design */
 @media (max-width: 640px) {
-  .container {
-    padding: 32px 16px;
-  }
 
   .puzzle-container,
   .answer-container {
@@ -621,9 +486,6 @@ a {
     flex-direction: column;
   }
 
-  .submit-button {
-    align-self: flex-start;
-  }
 
   .puzzle-meta {
     flex-direction: column;
@@ -708,29 +570,6 @@ a {
   color: var(--success-text, #0c4a6e);
 }
 
-.hint-reveal-button {
-  flex: 1;
-  padding: 12px 16px;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.hint-reveal-button:hover:not(:disabled) {
-  background: var(--accent-dark, #2563eb);
-  transform: translateY(-1px);
-}
-
-.hint-reveal-button:disabled {
-  background: var(--muted-bg, #f3f4f6);
-  color: var(--muted);
-  cursor: not-allowed;
-}
 
 .puzzle-hints {
   margin-top: 20px;
@@ -747,10 +586,6 @@ a {
 }
 
 @media (max-width: 768px) {
-  .shell-inner {
-    flex-direction: column;
-    gap: 24px;
-  }
 
   .puzzle-sidebar {
     flex: none;
@@ -831,84 +666,6 @@ a {
     'Courier New', monospace;
 }
 
-/* Player Statistics */
-.stats-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow:
-    0 1px 2px rgba(2, 8, 23, 0.04),
-    0 2px 6px rgba(2, 8, 23, 0.06);
-}
-
-.stats-content h3 {
-  margin: 0 0 20px 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.stats-unauthenticated {
-  text-align: center;
-  padding: 20px;
-}
-
-.stats-unauthenticated h3 {
-  margin: 0 0 12px 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.stats-unauthenticated p {
-  margin: 0 0 20px 0;
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.stats-error {
-  padding: 16px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  color: #dc2626;
-  text-align: center;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 16px;
-}
-
-.stat-item {
-  text-align: center;
-  padding: 16px;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.stat-item-wide {
-  grid-column: 1 / -1;
-}
-
-.stat-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 4px;
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  color: var(--muted);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
 
 /* Gated stats card with blur and overlay CTA */
 .gated-stats {
@@ -935,15 +692,6 @@ a {
   padding: 8px 0 0 0;
 }
 
-@media (max-width: 640px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .stat-item-wide {
-    grid-column: 1 / -1;
-  }
-}
 
 /* Give Up Button */
 .give-up-container {
@@ -968,26 +716,6 @@ a {
   text-decoration: underline;
 }
 
-.give-up-button {
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-}
-
-.give-up-button:hover:not(:disabled) {
-  color: #dc2626;
-  border-color: #dc2626;
-}
-
-.give-up-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 
 .give-up-confirmation {
   padding: 16px;
@@ -1009,24 +737,6 @@ a {
   justify-content: center;
 }
 
-.secondary-button {
-  background: var(--background);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.875rem;
-}
-
-.secondary-button:hover:not(:disabled) {
-  background: var(--card);
-}
-
-.secondary-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 
 /* Checkout Result Pages */
 .checkout-result {

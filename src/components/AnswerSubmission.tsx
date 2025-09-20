@@ -7,6 +7,7 @@ import type {
 } from '@/hooks/schemas'
 import { useSubmitAnswer } from '@/hooks/usePuzzles'
 import { GiveUpButton } from './GiveUpButton'
+import { Button } from '@/components/ui'
 
 interface AnswerSubmissionProps {
   puzzle: PuzzleQuestion | null
@@ -151,7 +152,7 @@ export function AnswerSubmission({
               disabled={isSubmitting || submissionResult?.isCorrect === true}
               autoComplete='off'
             />
-            <button
+            <Button
               type='submit'
               disabled={
                 !userAnswer.trim() ||
@@ -159,10 +160,11 @@ export function AnswerSubmission({
                 submissionResult?.isCorrect === true ||
                 (attemptStatus !== null && attemptStatus.remainingGuesses <= 0)
               }
-              className='submit-button'
+              loading={isSubmitting}
+              variant='submit'
             >
               {isSubmitting ? 'Submitting...' : 'Submit'}
-            </button>
+            </Button>
           </div>
         </div>
       </form>
