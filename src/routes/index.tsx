@@ -15,7 +15,8 @@ export const Route = createFileRoute('/')({
 
 function Landing() {
   const { data: puzzle, isLoading: puzzleLoading } = useGetPuzzleOfTheDay()
-  const { data: attemptStatus, isLoading: attemptLoading } = useGetAttemptStatus(puzzle?.id)
+  const { data: attemptStatus, isLoading: attemptLoading } =
+    useGetAttemptStatus(puzzle?.id)
   const [hasIncorrectGuess, setHasIncorrectGuess] = useState(false)
   const [isVisible, setIsVisible] = useState({ header: false, card: false })
   const headerRef = useRef<HTMLElement>(null)
@@ -31,11 +32,11 @@ function Landing() {
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
-      rootMargin: '50px'
+      rootMargin: '50px',
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           if (entry.target === headerRef.current) {
             setIsVisible(prev => ({ ...prev, header: true }))
@@ -53,12 +54,12 @@ function Landing() {
   }, [puzzle])
 
   return (
-    <main className="min-h-screen bg-gradient-game">
+    <main className='min-h-screen bg-gradient-game'>
       <Container
-        size="lg"
-        className="xl:max-w-screen-xl 2xl:max-w-screen-2xl"
-        background="subtle"
-        padding="md"
+        size='lg'
+        className='xl:max-w-screen-xl 2xl:max-w-screen-2xl'
+        background='subtle'
+        padding='md'
       >
         <header
           ref={headerRef}
@@ -68,26 +69,31 @@ function Landing() {
               : 'opacity-0 translate-y-8'
           }`}
         >
-          <h1 className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-foreground mb-3 transition-all duration-1000 delay-200 transform ${
-            isVisible.header
-              ? 'opacity-100 translate-y-0 scale-100'
-              : 'opacity-0 translate-y-4 scale-95'
-          }`}>
-            <span className="bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+          <h1
+            className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-foreground mb-3 transition-all duration-1000 delay-200 transform ${
+              isVisible.header
+                ? 'opacity-100 translate-y-0 scale-100'
+                : 'opacity-0 translate-y-4 scale-95'
+            }`}
+          >
+            <span className='bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400 bg-clip-text text-transparent'>
               In Other Words
             </span>
           </h1>
-          <p className={`text-lg sm:text-xl lg:text-2xl text-muted max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-500 transform ${
-            isVisible.header
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-4'
-          }`}>
-            A daily twist on wordplay. Decode a clue to find the phrase it points to.
+          <p
+            className={`text-lg sm:text-xl lg:text-2xl text-muted max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-500 transform ${
+              isVisible.header
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-4'
+            }`}
+          >
+            A daily twist on wordplay. Decode a clue to find the phrase it
+            points to.
           </p>
         </header>
 
         {(puzzleLoading || attemptLoading) && (
-          <div className="flex justify-center animate-fade-in">
+          <div className='flex justify-center animate-fade-in'>
             <Spinner aria-label='Loading puzzle' />
           </div>
         )}
@@ -95,7 +101,7 @@ function Landing() {
         {puzzle && (
           <Card
             ref={cardRef}
-            variant="game"
+            variant='game'
             className={`w-full min-h-[260px] shadow-xl transition-all duration-1000 transform ${
               isVisible.card
                 ? 'opacity-100 translate-y-0 scale-100'
@@ -103,12 +109,14 @@ function Landing() {
             }`}
             aria-label='Game area'
           >
-            <div className="p-6 grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-6 lg:gap-8 items-start w-full h-full">
-              <div className={`min-w-0 flex flex-col gap-6 transition-all duration-1000 delay-300 transform ${
-                isVisible.card
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 -translate-x-8'
-              }`}>
+            <div className='p-6 grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-6 lg:gap-8 items-start w-full h-full'>
+              <div
+                className={`min-w-0 flex flex-col gap-6 transition-all duration-1000 delay-300 transform ${
+                  isVisible.card
+                    ? 'opacity-100 translate-x-0'
+                    : 'opacity-0 -translate-x-8'
+                }`}
+              >
                 <PuzzleOfTheDay puzzle={puzzle} />
                 <AnswerSubmission
                   puzzle={puzzle}
@@ -116,12 +124,17 @@ function Landing() {
                   onSubmissionResult={handleSubmissionResult}
                 />
               </div>
-              <div className={`lg:order-2 transition-all duration-1000 delay-600 transform ${
-                isVisible.card
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 translate-x-8'
-              }`}>
-                <HintsSection puzzle={puzzle} hasIncorrectGuess={hasIncorrectGuess} />
+              <div
+                className={`lg:order-2 transition-all duration-1000 delay-600 transform ${
+                  isVisible.card
+                    ? 'opacity-100 translate-x-0'
+                    : 'opacity-0 translate-x-8'
+                }`}
+              >
+                <HintsSection
+                  puzzle={puzzle}
+                  hasIncorrectGuess={hasIncorrectGuess}
+                />
               </div>
             </div>
           </Card>

@@ -97,7 +97,7 @@ export const useSubmitAnswer = () => {
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/public/puzzle-of-the-day/submit/${puzzleId}`,
           {
-            answer: userAnswer
+            answer: userAnswer,
           },
           {
             headers: {

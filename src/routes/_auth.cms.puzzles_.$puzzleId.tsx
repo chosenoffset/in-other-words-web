@@ -88,7 +88,7 @@ function PuzzleDetailPage() {
         hints: formState.hints,
         archived: formState.archived,
         published: formState.published,
-      } as any
+      }
 
       createMutation.mutate(payload, {
         onSuccess: () => navigate({ to: '/cms/puzzles' }),
@@ -148,7 +148,9 @@ function PuzzleDetailPage() {
 
       <form onSubmit={handleSubmit} className='shell' style={{ padding: 16 }}>
         <div className='input-group'>
-          <label className='answer-label' htmlFor='question-input'>Question</label>
+          <label className='answer-label' htmlFor='question-input'>
+            Question
+          </label>
           <input
             id='question-input'
             className='answer-input'
@@ -160,7 +162,9 @@ function PuzzleDetailPage() {
         </div>
 
         <div className='input-group' style={{ marginTop: 16 }}>
-          <label className='answer-label' htmlFor='answer-input'>Answer</label>
+          <label className='answer-label' htmlFor='answer-input'>
+            Answer
+          </label>
           <input
             id='answer-input'
             className='answer-input mono'

@@ -1,6 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useEffect, useRef, useState } from 'react'
-import { useSignIn, useSignUp } from '@clerk/clerk-react'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import {
+  useSignIn,
+  useSignUp,
+  type SignInResource,
+  type SignUpResource,
+} from '@clerk/clerk-react'
 
 export const Route = createFileRoute('/sign-in')({
   component: RouteComponent,
@@ -20,8 +25,8 @@ function RegisterClient() {
   const [showCodeInput, setShowCodeInput] = useState(false)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [activeSignIn, setActiveSignIn] = useState<any>(null)
-  const [activeSignUp, setActiveSignUp] = useState<any>(null)
+  const [activeSignIn, setActiveSignIn] = useState<SignInResource | null>(null)
+  const [activeSignUp, setActiveSignUp] = useState<SignUpResource | null>(null)
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -49,8 +54,9 @@ function RegisterClient() {
         setShowCodeInput(true)
         setCode(['', '', '', '', '', ''])
         setTimeout(() => inputRefs[0].current?.focus(), 100)
-      } catch (err: any) {
-        if (err?.errors?.[0]?.code === 'form_identifier_not_found') {
+      } catch (err: unknown) {
+        const error = err as { errors?: Array<{ code: string }> }
+        if (error?.errors?.[0]?.code === 'form_identifier_not_found') {
           const su = await signUp!.create({ emailAddress: address })
           setActiveSignUp(su)
           await su.prepareEmailAddressVerification({ strategy: 'email_code' })
@@ -61,53 +67,58 @@ function RegisterClient() {
           throw err
         }
       }
-    } catch (e: any) {
-      setError(e?.message || 'Failed to start email flow')
+    } catch (e: unknown) {
+      const error = e as Error
+      setError(error?.message || 'Failed to start email flow')
     } finally {
       setIsLoading(false)
     }
   }
 
-  const handleCodeSubmit = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault()
-    const codeStr = code.join('')
-    if (codeStr.length !== 6 || isLoading) return
-    setIsLoading(true)
-    setError('')
-    try {
-      if (activeSignIn) {
-        const res = await activeSignIn.attemptFirstFactor({
-          strategy: 'email_code',
-          code: codeStr,
-        })
-        if (res.status !== 'complete')
-          throw new Error('Verification incomplete')
-        navigate({ to: '/sign-in-sso-callback' })
-        return
+  const handleCodeSubmit = useCallback(
+    async (e?: React.FormEvent) => {
+      if (e) e.preventDefault()
+      const codeStr = code.join('')
+      if (codeStr.length !== 6 || isLoading) return
+      setIsLoading(true)
+      setError('')
+      try {
+        if (activeSignIn) {
+          const res = await activeSignIn.attemptFirstFactor({
+            strategy: 'email_code',
+            code: codeStr,
+          })
+          if (res.status !== 'complete')
+            throw new Error('Verification incomplete')
+          navigate({ to: '/sign-in-sso-callback' })
+          return
+        }
+        if (activeSignUp) {
+          const res = await activeSignUp.attemptEmailAddressVerification({
+            code: codeStr,
+          })
+          if (res.status !== 'complete')
+            throw new Error('Verification incomplete')
+          navigate({ to: '/sign-in-sso-callback' })
+          return
+        }
+        throw new Error('No active session')
+      } catch (e: unknown) {
+        const error = e as Error
+        setError(error?.message || 'Failed to verify code')
+      } finally {
+        setIsLoading(false)
       }
-      if (activeSignUp) {
-        const res = await activeSignUp.attemptEmailAddressVerification({
-          code: codeStr,
-        })
-        if (res.status !== 'complete')
-          throw new Error('Verification incomplete')
-        navigate({ to: '/sign-in-sso-callback' })
-        return
-      }
-      throw new Error('No active session')
-    } catch (e: any) {
-      setError(e?.message || 'Failed to verify code')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+    },
+    [code, isLoading, activeSignIn, activeSignUp, navigate]
+  )
 
   useEffect(() => {
     const s = code.join('')
     if (showCodeInput && s.length === 6 && !isLoading) {
       handleCodeSubmit()
     }
-  }, [code])
+  }, [code, showCodeInput, isLoading, handleCodeSubmit])
 
   const handleOAuth = async (
     provider: 'oauth_google' | 'oauth_facebook' | 'oauth_discord'

@@ -33,10 +33,8 @@ export function SubscribeButton({
   return (
     <div className={className}>
       <SignedOut>
-        <Button asChild variant="primary">
-          <Link to='/sign-in'>
-            Sign in to subscribe
-          </Link>
+        <Button asChild variant='primary'>
+          <Link to='/sign-in'>Sign in to subscribe</Link>
         </Button>
       </SignedOut>
       <SignedIn>
@@ -45,7 +43,7 @@ export function SubscribeButton({
           onClick={handleClick}
           disabled={disabled || createSubscription.isPending}
           loading={createSubscription.isPending}
-          variant="primary"
+          variant='primary'
         >
           {createSubscription.isPending
             ? 'Redirecting…'
