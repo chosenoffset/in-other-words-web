@@ -1,11 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState, useCallback } from 'react'
-import {
-  useSignIn,
-  useSignUp,
-  type SignInResource,
-  type SignUpResource,
-} from '@clerk/clerk-react'
+import { useSignIn, useSignUp } from '@clerk/clerk-react'
 
 export const Route = createFileRoute('/sign-in')({
   component: RouteComponent,
@@ -25,8 +20,8 @@ function RegisterClient() {
   const [showCodeInput, setShowCodeInput] = useState(false)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [activeSignIn, setActiveSignIn] = useState<SignInResource | null>(null)
-  const [activeSignUp, setActiveSignUp] = useState<SignUpResource | null>(null)
+  const [activeSignIn, setActiveSignIn] = useState<unknown>(null)
+  const [activeSignUp, setActiveSignUp] = useState<unknown>(null)
 
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -84,7 +79,7 @@ function RegisterClient() {
       setError('')
       try {
         if (activeSignIn) {
-          const res = await activeSignIn.attemptFirstFactor({
+          const res = await (activeSignIn as { attemptFirstFactor: (params: { strategy: string; code: string }) => Promise<{ status: string }> }).attemptFirstFactor({
             strategy: 'email_code',
             code: codeStr,
           })
@@ -94,7 +89,7 @@ function RegisterClient() {
           return
         }
         if (activeSignUp) {
-          const res = await activeSignUp.attemptEmailAddressVerification({
+          const res = await (activeSignUp as { attemptEmailAddressVerification: (params: { code: string }) => Promise<{ status: string }> }).attemptEmailAddressVerification({
             code: codeStr,
           })
           if (res.status !== 'complete')

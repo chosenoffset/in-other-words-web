@@ -88,6 +88,7 @@ function PuzzleDetailPage() {
         hints: formState.hints,
         archived: formState.archived,
         published: formState.published,
+        category: 'UNCATEGORIZED' as const,
       }
 
       createMutation.mutate(payload, {

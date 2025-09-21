@@ -1,5 +1,5 @@
 import { Button } from './Button'
-import { useTheme } from './ThemeProvider'
+import { useTheme } from './theme-context'
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()

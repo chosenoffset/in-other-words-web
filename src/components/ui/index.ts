@@ -1,4 +1,5 @@
-export { Button, buttonVariants, type ButtonProps } from './Button'
+export { Button, type ButtonProps } from './Button'
+export { buttonVariants } from './button-variants'
 export {
   Card,
   CardHeader,
@@ -9,4 +10,5 @@ export {
 } from './Card'
 export { Container, type ContainerProps } from './Container'
 export { Spinner, type SpinnerProps } from './Spinner'
-export { Badge, badgeVariants, type BadgeProps } from './Badge'
+export { Badge, type BadgeProps } from './Badge'
+export { badgeVariants } from './badge-variants'

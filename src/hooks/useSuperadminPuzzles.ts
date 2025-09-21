@@ -50,11 +50,15 @@ export const useSuperadminGetPuzzle = (id: string | undefined) => {
   })
 }
 
+type CreatePuzzlePayload = Pick<Puzzle, 'question' | 'answer' | 'hints' | 'archived' | 'published'> & {
+  category?: Puzzle['category']
+}
+
 export const useSuperadminCreatePuzzle = () => {
   const { getToken } = useAuth()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (newPuzzle: Puzzle) => {
+    mutationFn: async (newPuzzle: CreatePuzzlePayload) => {
       const token = await getToken()
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/superadmin/puzzles`,
