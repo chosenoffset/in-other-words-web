@@ -1,9 +1,12 @@
 import { Link } from '@tanstack/react-router'
+import { useUser } from '@clerk/clerk-react'
+import { useIsClerkIdSuperAdmin } from '@/hooks/useUser.ts'
 
 export type AppNavLink = {
   to: string
   label: string
   exact?: boolean
+  admin?: boolean
 }
 
 type NavLinksProps = {
@@ -20,12 +23,21 @@ export function NavLinks({
   defaultExact = false,
 }: NavLinksProps) {
   const isVertical = orientation === 'vertical'
+  const { user } = useUser()
+  const { data: isSuperAdmin = false } = useIsClerkIdSuperAdmin(user?.id || '')
+
+  const filteredLinks = links.filter(link => {
+    if (link.admin) {
+      return isSuperAdmin
+    }
+    return true
+  })
 
   return (
     <ul
       className={`list-none m-0 p-0 ${isVertical ? 'grid gap-1.5 pt-2' : 'flex items-center gap-3.5'}`}
     >
-      {links.map(link => (
+      {filteredLinks.map(link => (
         <li key={link.to}>
           <Link
             to={link.to}

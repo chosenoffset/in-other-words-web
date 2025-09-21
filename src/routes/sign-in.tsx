@@ -79,7 +79,14 @@ function RegisterClient() {
       setError('')
       try {
         if (activeSignIn) {
-          const res = await (activeSignIn as { attemptFirstFactor: (params: { strategy: string; code: string }) => Promise<{ status: string }> }).attemptFirstFactor({
+          const res = await (
+            activeSignIn as {
+              attemptFirstFactor: (params: {
+                strategy: string
+                code: string
+              }) => Promise<{ status: string }>
+            }
+          ).attemptFirstFactor({
             strategy: 'email_code',
             code: codeStr,
           })
@@ -89,7 +96,13 @@ function RegisterClient() {
           return
         }
         if (activeSignUp) {
-          const res = await (activeSignUp as { attemptEmailAddressVerification: (params: { code: string }) => Promise<{ status: string }> }).attemptEmailAddressVerification({
+          const res = await (
+            activeSignUp as {
+              attemptEmailAddressVerification: (params: {
+                code: string
+              }) => Promise<{ status: string }>
+            }
+          ).attemptEmailAddressVerification({
             code: codeStr,
           })
           if (res.status !== 'complete')

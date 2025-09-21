@@ -50,7 +50,10 @@ export const useSuperadminGetPuzzle = (id: string | undefined) => {
   })
 }
 
-type CreatePuzzlePayload = Pick<Puzzle, 'question' | 'answer' | 'hints' | 'archived' | 'published'> & {
+type CreatePuzzlePayload = Pick<
+  Puzzle,
+  'question' | 'answer' | 'hints' | 'archived' | 'published'
+> & {
   category?: Puzzle['category']
 }
 

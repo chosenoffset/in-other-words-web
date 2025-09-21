@@ -8,6 +8,7 @@ export function TopNav() {
   const links: AppNavLink[] = [
     { to: '/', label: 'Home', exact: true },
     { to: '/profile', label: 'Profile', exact: true },
+    { to: '/cms', label: 'CMS', exact: true, admin: true },
   ]
 
   return (
