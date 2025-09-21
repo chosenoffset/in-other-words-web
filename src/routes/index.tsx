@@ -54,7 +54,12 @@ function Landing() {
 
   return (
     <main className="min-h-screen bg-gradient-game">
-      <Container background="subtle" padding="md">
+      <Container
+        size="lg"
+        className="xl:max-w-screen-xl 2xl:max-w-screen-2xl"
+        background="subtle"
+        padding="md"
+      >
         <header
           ref={headerRef}
           className={`text-center mb-7 transition-all duration-1000 transform ${
@@ -63,7 +68,7 @@ function Landing() {
               : 'opacity-0 translate-y-8'
           }`}
         >
-          <h1 className={`text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3 transition-all duration-1000 delay-200 transform ${
+          <h1 className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-foreground mb-3 transition-all duration-1000 delay-200 transform ${
             isVisible.header
               ? 'opacity-100 translate-y-0 scale-100'
               : 'opacity-0 translate-y-4 scale-95'
@@ -72,7 +77,7 @@ function Landing() {
               In Other Words
             </span>
           </h1>
-          <p className={`text-lg text-muted max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-500 transform ${
+          <p className={`text-lg sm:text-xl lg:text-2xl text-muted max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-500 transform ${
             isVisible.header
               ? 'opacity-100 translate-y-0'
               : 'opacity-0 translate-y-4'
@@ -91,15 +96,15 @@ function Landing() {
           <Card
             ref={cardRef}
             variant="game"
-            className={`min-h-[260px] grid place-items-center shadow-xl transition-all duration-1000 transform ${
+            className={`w-full min-h-[260px] shadow-xl transition-all duration-1000 transform ${
               isVisible.card
                 ? 'opacity-100 translate-y-0 scale-100'
                 : 'opacity-0 translate-y-12 scale-95'
             }`}
             aria-label='Game area'
           >
-            <div className="text-center p-10 flex gap-10 items-start justify-center flex-wrap md:flex-nowrap">
-              <div className={`flex-1 max-w-[600px] flex flex-col gap-6 transition-all duration-1000 delay-300 transform ${
+            <div className="p-6 grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-6 lg:gap-8 items-start w-full h-full">
+              <div className={`min-w-0 flex flex-col gap-6 transition-all duration-1000 delay-300 transform ${
                 isVisible.card
                   ? 'opacity-100 translate-x-0'
                   : 'opacity-0 -translate-x-8'
@@ -111,7 +116,7 @@ function Landing() {
                   onSubmissionResult={handleSubmissionResult}
                 />
               </div>
-              <div className={`w-full md:w-[300px] md:flex-shrink-0 transition-all duration-1000 delay-600 transform ${
+              <div className={`lg:order-2 transition-all duration-1000 delay-600 transform ${
                 isVisible.card
                   ? 'opacity-100 translate-x-0'
                   : 'opacity-0 translate-x-8'

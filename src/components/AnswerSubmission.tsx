@@ -154,11 +154,11 @@ export function AnswerSubmission({
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-3">
-          <label htmlFor='answer-input' className="block text-sm font-semibold text-gray-700 dark:text-gray-400">
+        <div className="space-y-4">
+          <label htmlFor='answer-input' className="block text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100">
             Your Answer
           </label>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <input
                 id='answer-input'
@@ -167,12 +167,13 @@ export function AnswerSubmission({
                 onChange={handleInputChange}
                 placeholder='Enter your answer...'
                 className={`
-                  w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg
+                  w-full px-6 py-4 text-lg lg:text-xl border-2 border-gray-300 dark:border-gray-600 rounded-xl
                   bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
                   placeholder-gray-500 dark:placeholder-gray-400
                   transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-400
-                  focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 focus:outline-none
-                  disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed text-base
+                  focus:ring-4 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 focus:outline-none
+                  disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed
+                  shadow-sm hover:shadow-md
                   ${showAnimation === 'correct' ? 'answer-correct' : ''}
                   ${showAnimation === 'incorrect' ? 'answer-incorrect' : ''}
                 `}
@@ -180,7 +181,7 @@ export function AnswerSubmission({
                 autoComplete='off'
               />
               {/* Enhanced focus indicator */}
-              <div className="absolute inset-0 rounded-lg border-2 border-transparent bg-gradient-to-r from-sky-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 peer-focus:opacity-100 pointer-events-none" />
+              <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-sky-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 peer-focus:opacity-100 pointer-events-none" />
             </div>
             <Button
               type='submit'
@@ -194,7 +195,7 @@ export function AnswerSubmission({
               variant='game-primary'
               size="lg"
               className={`
-                px-8 interactive-button
+                sm:px-6 lg:px-8 sm:w-auto w-full interactive-button
                 ${showAnimation === 'correct' ? 'celebration-bounce' : ''}
                 ${showAnimation === 'incorrect' ? 'button-press' : ''}
               `}

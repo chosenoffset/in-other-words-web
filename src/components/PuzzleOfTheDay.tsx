@@ -23,7 +23,7 @@ export function PuzzleOfTheDay({ puzzle }: PuzzleOfTheDayProps) {
           </span>
         </div>
 
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 animate-slide-in-up">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-gray-100 animate-slide-in-up">
           Today&apos;s Puzzle
         </h2>
       </div>
@@ -38,7 +38,7 @@ export function PuzzleOfTheDay({ puzzle }: PuzzleOfTheDayProps) {
             </svg>
           </div>
 
-          <p className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 leading-relaxed italic pl-4">
+          <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 dark:text-gray-100 leading-relaxed italic pl-4">
             {puzzle.question}
           </p>
         </div>
