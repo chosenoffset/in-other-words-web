@@ -121,7 +121,7 @@ function RegisterClient() {
         redirectUrl: '/sign-in-sso-callback',
         redirectUrlComplete: '/sign-in-sso-callback',
       })
-    } catch (e) {
+    } catch {
       setError('SSO failed, try again')
       setIsLoading(false)
     }

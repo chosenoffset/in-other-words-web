@@ -35,14 +35,7 @@ function PuzzleDetailPage() {
     isLoading,
     isError,
     error,
-  } = isNew
-    ? {
-        data: undefined,
-        isLoading: false,
-        isError: false,
-        error: undefined as unknown as Error,
-      }
-    : useSuperadminGetPuzzle(puzzleId)
+  } = useSuperadminGetPuzzle(isNew ? '' : puzzleId)
 
   const createMutation = useSuperadminCreatePuzzle()
   const updateMutation = useSuperadminUpdatePuzzle()
@@ -155,8 +148,9 @@ function PuzzleDetailPage() {
 
       <form onSubmit={handleSubmit} className='shell' style={{ padding: 16 }}>
         <div className='input-group'>
-          <label className='answer-label'>Question</label>
+          <label className='answer-label' htmlFor='question-input'>Question</label>
           <input
+            id='question-input'
             className='answer-input'
             name='question'
             value={formState.question}
@@ -166,8 +160,9 @@ function PuzzleDetailPage() {
         </div>
 
         <div className='input-group' style={{ marginTop: 16 }}>
-          <label className='answer-label'>Answer</label>
+          <label className='answer-label' htmlFor='answer-input'>Answer</label>
           <input
+            id='answer-input'
             className='answer-input mono'
             name='answer'
             value={formState.answer}
@@ -177,7 +172,7 @@ function PuzzleDetailPage() {
         </div>
 
         <div className='input-group' style={{ marginTop: 16 }}>
-          <label className='answer-label'>Hints</label>
+          <h3 className='answer-label'>Hints</h3>
           <div
             className='flex-container'
             style={{ flexDirection: 'column', gap: 12 }}

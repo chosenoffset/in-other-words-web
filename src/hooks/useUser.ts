@@ -3,7 +3,7 @@ import { useAuth } from '@clerk/clerk-react'
 import axios from 'axios'
 import { userSchema, type User } from '@/hooks/schemas'
 
-export const getIsClerkIdSuperAdmin = (clerkId: string) => {
+export const useIsClerkIdSuperAdmin = (clerkId: string) => {
   const { getToken } = useAuth()
   return useQuery({
     queryKey: ['isClerkIdSuperAdmin', clerkId],

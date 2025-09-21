@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "./styles/game-animations.css";
+
+/* Tailwind v4 Dark Mode Configuration */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Additional body styling on top of Tailwind's preflight */
 body {
@@ -7,6 +11,9 @@ body {
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
 }
 
 .flex-container {
@@ -20,10 +27,11 @@ body {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.8);
+  @apply bg-white/80 dark:bg-gray-900/80;
   backdrop-filter: saturate(1.2) blur(6px);
   border-bottom: 1px solid var(--border);
 }
+
 
 .nav-container {
   display: flex;
@@ -80,8 +88,9 @@ body {
 }
 
 .nav-toggle:hover {
-  background: rgba(2, 8, 23, 0.04);
+  @apply bg-gray-100 dark:bg-gray-700;
 }
+
 
 .nav-toggle-bar {
   display: block;
@@ -125,13 +134,14 @@ body {
 }
 
 .nav-link:hover {
-  background: rgba(2, 8, 23, 0.04);
+  @apply bg-gray-100 dark:bg-gray-700;
 }
 
+
 .nav-link[aria-current='page'] {
-  background: #e6f6fe;
-  color: #0a6fa1;
+  @apply bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300;
 }
+
 
 @media (min-width: 768px) {
   .nav-desktop {
@@ -149,23 +159,12 @@ code {
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-:root {
-  --bg: #f8fafc;
-  --text: #0f172a;
-  --muted: #64748b;
-  --card: #ffffff;
-  --border: #e2e8f0;
-  --accent: #0ea5e9;
-}
+/* Tailwind v4 - CSS-first configuration */
 
-body {
-  background-color: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-}
+/* Body line-height and transition styling merged above with main body declaration */
 
 a {
-  color: var(--accent);
+  @apply text-blue-600 dark:text-blue-400;
   text-decoration: none;
 }
 
@@ -217,6 +216,7 @@ a {
     0 1px 2px rgba(2, 8, 23, 0.04),
     0 2px 6px rgba(2, 8, 23, 0.06);
 }
+
 
 /* Puzzle Component Styles */
 .puzzle-container {
@@ -292,6 +292,7 @@ a {
   color: #991b1b;
 }
 
+
 .puzzle-category {
   font-size: 0.875rem;
   color: var(--muted);
@@ -309,12 +310,13 @@ a {
 }
 
 .puzzle-clue {
-  background: #f1f5f9;
+  @apply bg-slate-50 dark:bg-slate-800;
   border-left: 4px solid var(--accent);
   padding: 20px 24px;
   border-radius: 0 8px 8px 0;
   margin: 24px 0;
 }
+
 
 .clue-text {
   font-size: 1.125rem;
@@ -364,7 +366,13 @@ a {
   border: 2px solid var(--border);
   border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.2s ease;
+  background-color: var(--card);
+  color: var(--text);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.answer-input::placeholder {
+  color: var(--muted);
 }
 
 .answer-input:focus {
@@ -373,10 +381,11 @@ a {
 }
 
 .answer-input:disabled {
-  background-color: #f8fafc;
+  @apply bg-slate-50 dark:bg-slate-800;
   color: var(--muted);
   cursor: not-allowed;
 }
+
 
 
 
@@ -396,6 +405,7 @@ a {
   background: #fef2f2;
   border: 1px solid #fecaca;
 }
+
 
 .result-message {
   display: flex;
@@ -519,6 +529,7 @@ a {
     0 2px 6px rgba(2, 8, 23, 0.06);
   text-align: left;
 }
+
 
 .hints-header {
   margin: 0 0 20px 0;
@@ -657,8 +668,9 @@ a {
 }
 
 .table-row:hover td {
-  background: rgba(2, 8, 23, 0.02);
+  @apply bg-gray-50 dark:bg-gray-800;
 }
+
 
 .mono {
   font-family:
@@ -723,6 +735,7 @@ a {
   border: 1px solid #fecaca;
   border-radius: 8px;
 }
+
 
 .give-up-warning {
   margin: 0 0 16px 0;
@@ -821,6 +834,7 @@ a {
   font-size: 0.875rem;
 }
 
+
 /* Profile Page */
 .profile-unauthenticated {
   text-align: center;
@@ -883,4 +897,54 @@ a {
 
 .sidebar-stats {
   margin-top: 24px;
+}
+
+/* Performance optimizations for animations */
+.animate-scale-in,
+.animate-slide-in-up,
+.animate-slide-in-left,
+.animate-slide-in-right,
+.animate-card-hover {
+  will-change: transform, opacity;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scale-in,
+  .animate-slide-in-up,
+  .animate-slide-in-left,
+  .animate-slide-in-right,
+  .animate-bounce-subtle,
+  .animate-float,
+  .animate-pulse-game {
+    animation: none;
+    transition: none;
+  }
+
+  .hover:-translate-y-1,
+  .hover:-translate-y-0.5,
+  .hover:scale-105 {
+    transform: none;
+  }
+}
+
+/* Enhanced focus indicators for accessibility */
+.focus-visible\:ring-2:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--accent), 0 0 0 4px rgba(14, 165, 233, 0.1);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bg-gradient-primary,
+  .bg-gradient-card,
+  .bg-gradient-game {
+    background: var(--accent);
+  }
+
+  .text-transparent {
+    background: none;
+    color: var(--text);
+  }
 }

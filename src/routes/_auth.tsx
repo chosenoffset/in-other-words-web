@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, notFound } from '@tanstack/react-router'
 import { useUser } from '@clerk/clerk-react'
-import { getIsClerkIdSuperAdmin } from '@/hooks/useUser.ts'
+import { useIsClerkIdSuperAdmin } from '@/hooks/useUser.ts'
 import { useEffect } from 'react'
 import { Spinner } from '@/components/Spinner'
 
@@ -15,7 +15,7 @@ function AuthGate() {
 function AuthGateClient() {
   const { user, isLoaded } = useUser()
   const { data: isSuperAdmin, isLoading: isSuperAdminLoading } =
-    getIsClerkIdSuperAdmin(user?.id || '')
+    useIsClerkIdSuperAdmin(user?.id || '')
 
   useEffect(() => {
     if (isLoaded && !user) {
