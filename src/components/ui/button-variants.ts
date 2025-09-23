@@ -23,12 +23,12 @@ export const buttonVariants = cva(
           'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25',
 
         submit:
-          'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 disabled:bg-slate-400 disabled:border-slate-400 disabled:cursor-not-allowed text-base font-medium',
+          'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 disabled:bg-none disabled:bg-slate-400 disabled:border-slate-400 disabled:text-slate-500 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:border-slate-400 disabled:hover:bg-slate-400 text-base font-medium',
 
         retry:
           'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 text-sm',
 
-        hint: 'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 disabled:bg-gray-100 disabled:border-gray-300 disabled:text-slate-500 disabled:cursor-not-allowed',
+        hint: 'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 disabled:bg-gray-100 disabled:border-gray-300 disabled:text-slate-500',
 
         // New enhanced game-specific variants
         'game-primary':
@@ -38,7 +38,7 @@ export const buttonVariants = cva(
           'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 hover:shadow-lg hover:shadow-purple-500/25 disabled:from-gray-300 disabled:to-gray-400 transition-all duration-300',
 
         success:
-          'bg-gradient-success text-white hover:shadow-lg hover:shadow-green-500/25 animate-success-bounce',
+          'bg-gradient-success text-white hover:shadow-lg hover:shadow-green-500/25',
 
         floating:
           'bg-gradient-primary text-white shadow-xl animate-float hover:animate-glow',

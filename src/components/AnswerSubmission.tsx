@@ -149,7 +149,7 @@ export function AnswerSubmission({
             >
               Your Answer
             </label>
-            <div className='flex flex-col sm:flex-row gap-3'>
+            <div className='flex flex-col sm:flex-row gap-3 items-center'>
               <div className='relative flex-1'>
                 <input
                   id='answer-input'
@@ -165,8 +165,6 @@ export function AnswerSubmission({
                     focus:ring-4 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 focus:outline-none
                     disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed
                     shadow-sm hover:shadow-md
-                    ${showAnimation === 'correct' ? 'answer-correct' : ''}
-                    ${showAnimation === 'incorrect' ? 'answer-incorrect' : ''}
                   `}
                   disabled={
                     submissionLoading || submissionResult?.isCorrect === true
@@ -186,11 +184,10 @@ export function AnswerSubmission({
                     attemptStatus.remainingGuesses <= 0)
                 }
                 loading={submissionLoading}
-                variant='game-primary'
+                variant='submit'
                 size='lg'
                 className={`
                   sm:px-6 lg:px-8 sm:w-auto w-full interactive-button
-                  ${showAnimation === 'correct' ? 'celebration-bounce' : ''}
                   ${showAnimation === 'incorrect' ? 'button-press' : ''}
                 `}
               >
@@ -205,7 +202,6 @@ export function AnswerSubmission({
         <div
           className={`
             rounded-lg p-6 border-2 shadow-lg
-            ${submissionResult.isCorrect ? 'confetti-pop' : ''}
             ${
               submissionResult.isCorrect
                 ? 'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 border-emerald-200 dark:border-emerald-700'
@@ -230,13 +226,10 @@ export function AnswerSubmission({
             </div>
           )}
 
-          <div
-            className={`flex items-start gap-4 ${submissionResult.isCorrect ? 'celebration-bounce' : 'answer-incorrect'}`}
-          >
+          <div className={`flex items-start gap-4`}>
             <div
               className={`
               flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shadow-lg
-              ${submissionResult.isCorrect ? 'sparkle' : ''}
               ${
                 submissionResult.isCorrect
                   ? 'bg-gradient-to-r from-emerald-500 to-green-500'
