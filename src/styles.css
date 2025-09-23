@@ -160,7 +160,7 @@ code {
 
 /* Body line-height and transition styling merged above with main body declaration */
 
-a {
+a:not(.interactive-button) {
   @apply text-blue-600 dark:text-blue-400;
   text-decoration: none;
 }

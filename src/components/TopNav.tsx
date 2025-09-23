@@ -3,8 +3,11 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import { NavLinks, type AppNavLink } from './NavLinks'
 import { Button } from '@/components/ui'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { SubscribeButton } from '@/components/SubscribeButton'
+import { useUserContext } from '@/hooks/useUserContext'
 
 export function TopNav() {
+  const { hasActiveSubscription } = useUserContext()
   const links: AppNavLink[] = [
     { to: '/', label: 'Home', exact: true },
     { to: '/profile', label: 'Profile', exact: true },
@@ -42,6 +45,9 @@ export function TopNav() {
           <div className='flex items-center gap-2.5'>
             <ThemeToggle />
             <SignedIn>
+              {!hasActiveSubscription && (
+                <SubscribeButton className='hidden md:block' />
+              )}
               <UserButton
                 appearance={{
                   elements: {
