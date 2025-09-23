@@ -160,7 +160,7 @@ code {
 
 /* Body line-height and transition styling merged above with main body declaration */
 
-a:not(.interactive-button) {
+a {
   @apply text-blue-600 dark:text-blue-400;
   text-decoration: none;
 }
@@ -833,12 +833,6 @@ a:not(.interactive-button) {
   color: var(--muted);
   font-size: 1.125rem;
   line-height: 1.5;
-}
-
-.profile-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
 }
 
 .profile-header {
