@@ -8,6 +8,7 @@ import type {
 import { useSubmitAnswer } from '@/hooks/usePuzzles'
 import { GiveUpButton } from './GiveUpButton'
 import { Button } from '@/components/ui'
+import { SubscribeButton } from './SubscribeButton'
 
 interface AnswerSubmissionProps {
   puzzle: PuzzleQuestion | null
@@ -31,6 +32,12 @@ export function AnswerSubmission({
   const [showAnimation, setShowAnimation] = useState<
     'correct' | 'incorrect' | null
   >(null)
+
+  const isOutOfGuesses = Boolean(
+    attemptStatus &&
+      attemptStatus.remainingGuesses === 0 &&
+      !submissionResult?.isCorrect
+  )
 
   // Update attemptStatus when initialAttemptStatus changes from API
   React.useEffect(() => {
@@ -157,67 +164,104 @@ export function AnswerSubmission({
 
   return (
     <div className='space-y-6'>
-      <form onSubmit={handleSubmit} className='space-y-4'>
+      {isOutOfGuesses ? (
         <div className='space-y-4'>
-          <label
-            htmlFor='answer-input'
-            className='block text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100'
+          <div
+            className='
+              rounded-lg p-6 border-2 shadow-lg
+              bg-gradient-to-r from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20
+              border-blue-200 dark:border-blue-700
+            '
           >
-            Your Answer
-          </label>
-          <div className='flex flex-col sm:flex-row gap-3'>
-            <div className='relative flex-1'>
-              <input
-                id='answer-input'
-                type='text'
-                value={userAnswer}
-                onChange={handleInputChange}
-                placeholder='Enter your answer...'
-                className={`
-                  w-full px-6 py-4 text-lg lg:text-xl border-2 border-gray-300 dark:border-gray-600 rounded-xl
-                  bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
-                  placeholder-gray-500 dark:placeholder-gray-400
-                  transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-400
-                  focus:ring-4 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 focus:outline-none
-                  disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed
-                  shadow-sm hover:shadow-md
-                  ${showAnimation === 'correct' ? 'answer-correct' : ''}
-                  ${showAnimation === 'incorrect' ? 'answer-incorrect' : ''}
-                `}
-                disabled={isSubmitting || submissionResult?.isCorrect === true}
-                autoComplete='off'
-              />
-              {/* Enhanced focus indicator */}
-              <div className='absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-sky-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 peer-focus:opacity-100 pointer-events-none' />
+            <div className='flex items-start gap-4'>
+              <div
+                className='
+                  flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shadow-lg
+                  bg-gradient-to-r from-blue-500 to-sky-500
+                '
+              >
+                !
+              </div>
+              <div className='flex-1'>
+                <p className='text-lg font-semibold text-blue-800 dark:text-blue-200'>
+                  You're out of guesses for today.
+                </p>
+                <p className='muted mt-1'>
+                  Subscribe to get extra guesses and keep playing.
+                </p>
+                <div className='mt-4'>
+                  <SubscribeButton>Get extra guesses</SubscribeButton>
+                </div>
+              </div>
             </div>
-            <Button
-              type='submit'
-              disabled={
-                !userAnswer.trim() ||
-                isSubmitting ||
-                submissionResult?.isCorrect === true ||
-                (attemptStatus !== null && attemptStatus.remainingGuesses <= 0)
-              }
-              loading={isSubmitting}
-              variant='game-primary'
-              size='lg'
-              className={`
-                sm:px-6 lg:px-8 sm:w-auto w-full interactive-button
-                ${showAnimation === 'correct' ? 'celebration-bounce' : ''}
-                ${showAnimation === 'incorrect' ? 'button-press' : ''}
-              `}
-            >
-              {isSubmitting ? 'Submitting...' : 'Submit'}
-            </Button>
           </div>
         </div>
-      </form>
+      ) : (
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <div className='space-y-4'>
+            <label
+              htmlFor='answer-input'
+              className='block text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100'
+            >
+              Your Answer
+            </label>
+            <div className='flex flex-col sm:flex-row gap-3'>
+              <div className='relative flex-1'>
+                <input
+                  id='answer-input'
+                  type='text'
+                  value={userAnswer}
+                  onChange={handleInputChange}
+                  placeholder='Enter your answer...'
+                  className={`
+                    w-full px-6 py-4 text-lg lg:text-xl border-2 border-gray-300 dark:border-gray-600 rounded-xl
+                    bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                    placeholder-gray-500 dark:placeholder-gray-400
+                    transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-400
+                    focus:ring-4 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 focus:outline-none
+                    disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed
+                    shadow-sm hover:shadow-md
+                    ${showAnimation === 'correct' ? 'answer-correct' : ''}
+                    ${showAnimation === 'incorrect' ? 'answer-incorrect' : ''}
+                  `}
+                  disabled={
+                    isSubmitting || submissionResult?.isCorrect === true
+                  }
+                  autoComplete='off'
+                />
+                {/* Enhanced focus indicator */}
+                <div className='absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-sky-500/20 to-blue-500/20 opacity-0 transition-opacity duration-300 peer-focus:opacity-100 pointer-events-none' />
+              </div>
+              <Button
+                type='submit'
+                disabled={
+                  !userAnswer.trim() ||
+                  isSubmitting ||
+                  submissionResult?.isCorrect === true ||
+                  (attemptStatus !== null &&
+                    attemptStatus.remainingGuesses <= 0)
+                }
+                loading={isSubmitting}
+                variant='game-primary'
+                size='lg'
+                className={`
+                  sm:px-6 lg:px-8 sm:w-auto w-full interactive-button
+                  ${showAnimation === 'correct' ? 'celebration-bounce' : ''}
+                  ${showAnimation === 'incorrect' ? 'button-press' : ''}
+                `}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+              </Button>
+            </div>
+          </div>
+        </form>
+      )}
 
       {submissionResult && (
         <div
           className={`
             rounded-lg p-6 border-2 shadow-lg
-            ${submissionResult.isCorrect ? 'confetti-pop' : 'card-flip'}
+            ${submissionResult.isCorrect ? 'confetti-pop' : ''}
             ${
               submissionResult.isCorrect
                 ? 'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 border-emerald-200 dark:border-emerald-700'
@@ -383,7 +427,8 @@ export function AnswerSubmission({
       {/* Only show give up button if puzzle is not completed and user has made at least one attempt */}
       {attemptStatus &&
         attemptStatus.attemptCount > 0 &&
-        !submissionResult?.isCorrect && (
+        !submissionResult?.isCorrect &&
+        !isOutOfGuesses && (
           <GiveUpButton
             puzzleId={puzzle.id}
             disabled={isSubmitting}
