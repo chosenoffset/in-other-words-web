@@ -3,7 +3,7 @@ import { PuzzleOfTheDay } from '@/components/PuzzleOfTheDay.tsx'
 import { AnswerSubmission } from '@/components/AnswerSubmission.tsx'
 import { HintsSection } from '@/components/HintsSection.tsx'
 import '../styles.css'
-import { useGetPuzzleOfTheDay, useGetAttemptStatus } from '@/hooks/usePuzzles'
+import { useGameContext } from '@/hooks/useGameContext'
 import { Spinner } from '../components/Spinner'
 import { useState, useEffect, useRef } from 'react'
 import type { PuzzleResult } from '@/hooks/schemas'
@@ -14,9 +14,11 @@ export const Route = createFileRoute('/')({
 })
 
 function Landing() {
-  const { data: puzzle, isLoading: puzzleLoading } = useGetPuzzleOfTheDay()
-  const { data: attemptStatus, isLoading: attemptLoading } =
-    useGetAttemptStatus(puzzle?.id)
+  const {
+    currentPuzzle: puzzle,
+    puzzleLoading,
+    attemptLoading,
+  } = useGameContext()
   const [hasIncorrectGuess, setHasIncorrectGuess] = useState(false)
   const [isVisible, setIsVisible] = useState({ header: false, card: false })
   const headerRef = useRef<HTMLElement>(null)
@@ -80,16 +82,6 @@ function Landing() {
               In Other Words
             </span>
           </h1>
-          <p
-            className={`text-lg sm:text-xl lg:text-2xl text-muted max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-500 transform ${
-              isVisible.header
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-4'
-            }`}
-          >
-            A daily twist on wordplay. Decode a clue to find the phrase it
-            points to.
-          </p>
         </header>
 
         {(puzzleLoading || attemptLoading) && (
@@ -118,11 +110,7 @@ function Landing() {
                 }`}
               >
                 <PuzzleOfTheDay puzzle={puzzle} />
-                <AnswerSubmission
-                  puzzle={puzzle}
-                  initialAttemptStatus={attemptStatus}
-                  onSubmissionResult={handleSubmissionResult}
-                />
+                <AnswerSubmission onSubmissionResult={handleSubmissionResult} />
               </div>
               <div
                 className={`lg:order-2 transition-all duration-1000 delay-600 transform ${

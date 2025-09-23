@@ -6,7 +6,7 @@ export const cardVariants = cva(
     variants: {
       variant: {
         default: 'border-border',
-        game: 'border-border bg-gradient-card',
+        game: 'border-border bg-white dark:bg-gray-900',
         stats:
           'border-border bg-gradient-to-br from-white to-gray-50 hover:shadow-lg animate-gpu-hover',
         hint: 'border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 hover:shadow-lg hover:shadow-indigo-500/10',

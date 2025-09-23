@@ -109,14 +109,11 @@
 }
 
 @keyframes sparkle {
-  0%,
-  100% {
-    transform: scale(0) rotate(0deg);
-    opacity: 0;
+  from {
+    transform: rotate(0deg);
   }
-  50% {
-    transform: scale(1) rotate(180deg);
-    opacity: 1;
+  to {
+    transform: rotate(360deg);
   }
 }
 

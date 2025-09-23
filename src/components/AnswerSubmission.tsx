@@ -1,57 +1,45 @@
 import * as React from 'react'
 import { useState } from 'react'
-import type {
-  AttemptStatus,
-  PuzzleQuestion,
-  PuzzleResult,
-} from '@/hooks/schemas'
-import { useSubmitAnswer } from '@/hooks/usePuzzles'
+import type { PuzzleResult } from '@/hooks/schemas'
+import { useGameContext } from '@/hooks/useGameContext'
+import { useUserContext } from '@/hooks/useUserContext'
+import { useUserSubscription } from '@/hooks/useUserSubscription'
 import { GiveUpButton } from './GiveUpButton'
 import { Button } from '@/components/ui'
-import { SubscribeButton } from './SubscribeButton'
+import { SubscriptionCTA } from './SubscriptionCTA'
+import { SignInCTA } from './SignInCTA'
 
 interface AnswerSubmissionProps {
-  puzzle: PuzzleQuestion | null
   onSubmissionResult?: (result: PuzzleResult) => void
-  initialAttemptStatus?: AttemptStatus | null
 }
 
 export function AnswerSubmission({
-  puzzle,
   onSubmissionResult,
-  initialAttemptStatus,
 }: AnswerSubmissionProps) {
+  // Get centralized state
+  const {
+    currentPuzzle: puzzle,
+    attemptStatus,
+    isOutOfGuesses,
+    submitAnswer: submitGameAnswer,
+    submissionLoading,
+  } = useGameContext()
+  const { isAuthenticated } = useUserContext()
+  const { shouldShowSubscriptionCTA, shouldShowSignInCTA } =
+    useUserSubscription()
+
   const [userAnswer, setUserAnswer] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submissionResult, setSubmissionResult] = useState<PuzzleResult | null>(
     null
-  )
-  const [attemptStatus, setAttemptStatus] = useState<AttemptStatus | null>(
-    initialAttemptStatus || null
   )
   const [showAnimation, setShowAnimation] = useState<
     'correct' | 'incorrect' | null
   >(null)
 
-  const isOutOfGuesses = Boolean(
-    attemptStatus &&
-      attemptStatus.remainingGuesses === 0 &&
-      !submissionResult?.isCorrect
-  )
-
-  // Update attemptStatus when initialAttemptStatus changes from API
-  React.useEffect(() => {
-    if (initialAttemptStatus) {
-      setAttemptStatus(initialAttemptStatus)
-    }
-  }, [initialAttemptStatus])
-
-  const submitAnswer = useSubmitAnswer()
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!puzzle || !userAnswer.trim() || isSubmitting) {
+    if (!puzzle || !userAnswer.trim() || submissionLoading) {
       return
     }
 
@@ -65,13 +53,7 @@ export function AnswerSubmission({
     }
 
     try {
-      setIsSubmitting(true)
-
-      const api = await submitAnswer.mutateAsync({
-        puzzleId: puzzle.id,
-        userAnswer: userAnswer.trim(),
-        timestamp: new Date(),
-      })
+      const api = await submitGameAnswer(userAnswer.trim())
 
       const result: PuzzleResult = {
         isCorrect: api.isCorrect,
@@ -92,19 +74,6 @@ export function AnswerSubmission({
       setShowAnimation(result.isCorrect ? 'correct' : 'incorrect')
       setTimeout(() => setShowAnimation(null), 1000)
 
-      // Update attempt status from API response
-      if (
-        result.remainingGuesses !== undefined &&
-        result.maxGuesses !== undefined
-      ) {
-        setAttemptStatus({
-          attemptCount:
-            (result.maxGuesses || 0) - (result.remainingGuesses || 0),
-          remainingGuesses: result.remainingGuesses,
-          maxGuesses: result.maxGuesses,
-        })
-      }
-
       // Clear input if correct
       if (result.isCorrect) {
         setUserAnswer('')
@@ -115,8 +84,6 @@ export function AnswerSubmission({
         isCorrect: false,
         message: 'Something went wrong. Please try again.',
       })
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
@@ -166,35 +133,12 @@ export function AnswerSubmission({
     <div className='space-y-6'>
       {isOutOfGuesses ? (
         <div className='space-y-4'>
-          <div
-            className='
-              rounded-lg p-6 border-2 shadow-lg
-              bg-gradient-to-r from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20
-              border-blue-200 dark:border-blue-700
-            '
-          >
-            <div className='flex items-start gap-4'>
-              <div
-                className='
-                  flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shadow-lg
-                  bg-gradient-to-r from-blue-500 to-sky-500
-                '
-              >
-                !
-              </div>
-              <div className='flex-1'>
-                <p className='text-lg font-semibold text-blue-800 dark:text-blue-200'>
-                  You're out of guesses for today.
-                </p>
-                <p className='muted mt-1'>
-                  Subscribe to get extra guesses and keep playing.
-                </p>
-                <div className='mt-4'>
-                  <SubscribeButton>Get extra guesses</SubscribeButton>
-                </div>
-              </div>
-            </div>
-          </div>
+          {shouldShowSubscriptionCTA(isOutOfGuesses, isAuthenticated) && (
+            <SubscriptionCTA />
+          )}
+          {shouldShowSignInCTA(isOutOfGuesses, isAuthenticated) && (
+            <SignInCTA />
+          )}
         </div>
       ) : (
         <form onSubmit={handleSubmit} className='space-y-4'>
@@ -225,7 +169,7 @@ export function AnswerSubmission({
                     ${showAnimation === 'incorrect' ? 'answer-incorrect' : ''}
                   `}
                   disabled={
-                    isSubmitting || submissionResult?.isCorrect === true
+                    submissionLoading || submissionResult?.isCorrect === true
                   }
                   autoComplete='off'
                 />
@@ -236,12 +180,12 @@ export function AnswerSubmission({
                 type='submit'
                 disabled={
                   !userAnswer.trim() ||
-                  isSubmitting ||
+                  submissionLoading ||
                   submissionResult?.isCorrect === true ||
                   (attemptStatus !== null &&
                     attemptStatus.remainingGuesses <= 0)
                 }
-                loading={isSubmitting}
+                loading={submissionLoading}
                 variant='game-primary'
                 size='lg'
                 className={`
@@ -250,7 +194,7 @@ export function AnswerSubmission({
                   ${showAnimation === 'incorrect' ? 'button-press' : ''}
                 `}
               >
-                {isSubmitting ? 'Submitting...' : 'Submit'}
+                {submissionLoading ? 'Submitting...' : 'Submit'}
               </Button>
             </div>
           </div>
@@ -431,7 +375,7 @@ export function AnswerSubmission({
         !isOutOfGuesses && (
           <GiveUpButton
             puzzleId={puzzle.id}
-            disabled={isSubmitting}
+            disabled={submissionLoading}
             onGiveUp={handleGiveUp}
           />
         )}

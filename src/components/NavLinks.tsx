@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { useUser } from '@clerk/clerk-react'
-import { useIsClerkIdSuperAdmin } from '@/hooks/useUser.ts'
+import { useUserContext } from '@/hooks/useUserContext'
 
 export type AppNavLink = {
   to: string
@@ -23,8 +22,7 @@ export function NavLinks({
   defaultExact = false,
 }: NavLinksProps) {
   const isVertical = orientation === 'vertical'
-  const { user } = useUser()
-  const { data: isSuperAdmin = false } = useIsClerkIdSuperAdmin(user?.id || '')
+  const { isSuperAdmin } = useUserContext()
 
   const filteredLinks = links.filter(link => {
     if (link.admin) {

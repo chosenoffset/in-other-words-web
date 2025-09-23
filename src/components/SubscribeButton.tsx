@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
-import { SignedIn, SignedOut } from '@clerk/clerk-react'
 import { Link } from '@tanstack/react-router'
 import { useCreateSubscription } from '@/hooks/useStripe'
+import { useUserContext } from '@/hooks/useUserContext'
 import { Button } from '@/components/ui'
 
 type SubscribeButtonProps = {
@@ -17,6 +17,7 @@ export function SubscribeButton({
   onRedirect,
   disabled,
 }: SubscribeButtonProps) {
+  const { isAuthenticated } = useUserContext()
   const createSubscription = useCreateSubscription()
 
   const handleClick = useCallback(async () => {
@@ -32,12 +33,11 @@ export function SubscribeButton({
 
   return (
     <div className={className}>
-      <SignedOut>
+      {!isAuthenticated ? (
         <Button asChild variant='primary'>
           <Link to='/sign-in'>Sign in to subscribe</Link>
         </Button>
-      </SignedOut>
-      <SignedIn>
+      ) : (
         <Button
           type='button'
           onClick={handleClick}
@@ -49,7 +49,7 @@ export function SubscribeButton({
             ? 'Redirecting…'
             : children || 'Subscribe'}
         </Button>
-      </SignedIn>
+      )}
     </div>
   )
 }

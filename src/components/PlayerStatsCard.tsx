@@ -1,9 +1,8 @@
 import { useGetPlayerStats } from '@/hooks/usePuzzles'
-import { SignedIn, SignedOut } from '@clerk/clerk-react'
 import { Link } from '@tanstack/react-router'
 import { Spinner } from './Spinner'
 import { SubscribeButton } from '@/components/SubscribeButton'
-import { useGetCurrentUser } from '@/hooks/useUser'
+import { useUserContext } from '@/hooks/useUserContext'
 import {
   Card,
   CardHeader,
@@ -49,7 +48,7 @@ const useAnimatedCounter = (value: number, duration: number = 1000) => {
 
 export function PlayerStatsCard() {
   const { data: stats, isLoading, error } = useGetPlayerStats()
-  const { data: appUser } = useGetCurrentUser()
+  const { isAuthenticated, hasActiveSubscription } = useUserContext()
 
   const formatTime = (timeMs: number | null) => {
     if (!timeMs) return 'N/A'
@@ -137,7 +136,7 @@ export function PlayerStatsCard() {
 
   return (
     <Card variant='stats' className='shadow-lg animate-fade-in'>
-      <SignedOut>
+      {!isAuthenticated ? (
         <CardContent className='text-center py-12'>
           <div className='w-16 h-16 bg-gradient-to-r from-sky-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6'>
             <svg
@@ -182,224 +181,221 @@ export function PlayerStatsCard() {
             </Link>
           </Button>
         </CardContent>
-      </SignedOut>
+      ) : (
+        <>
+          <CardHeader>
+            <CardTitle className='text-foreground flex items-center gap-3'>
+              <svg
+                className='h-6 w-6 text-sky-600 dark:text-sky-400'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+                />
+              </svg>
+              <span className='bg-gradient-to-r from-sky-600 to-blue-600 dark:from-sky-400 dark:to-blue-400 bg-clip-text text-transparent'>
+                Your Statistics
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoading && <Spinner aria-label='Loading statistics' />}
 
-      <SignedIn>
-        <CardHeader>
-          <CardTitle className='text-foreground flex items-center gap-3'>
-            <svg
-              className='h-6 w-6 text-sky-600 dark:text-sky-400'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
-              />
-            </svg>
-            <span className='bg-gradient-to-r from-sky-600 to-blue-600 dark:from-sky-400 dark:to-blue-400 bg-clip-text text-transparent'>
-              Your Statistics
-            </span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading && <Spinner aria-label='Loading statistics' />}
+            {error && (
+              <div className='p-4 bg-red-50 border border-red-200 rounded-lg'>
+                <p className='text-red-600'>
+                  Failed to load statistics. Please try again later.
+                </p>
+              </div>
+            )}
 
-          {error && (
-            <div className='p-4 bg-red-50 border border-red-200 rounded-lg'>
-              <p className='text-red-600'>
-                Failed to load statistics. Please try again later.
-              </p>
-            </div>
-          )}
-
-          {stats && (
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-              {/* Enhanced Basic Stats */}
-              <StatBox
-                value={stats.totalGames}
-                label='Total Games'
-                icon='🎮'
-                delay={0}
-                variant='primary'
-              />
-
-              <StatBox
-                value={stats.gamesWon}
-                label='Games Won'
-                icon='🏆'
-                delay={100}
-                variant='success'
-              />
-
-              <StatBox
-                value={`${stats.winRate.toFixed(1)}%`}
-                label='Win Rate'
-                icon='📊'
-                delay={200}
-                variant={
-                  stats.winRate >= 70
-                    ? 'success'
-                    : stats.winRate >= 50
-                      ? 'warning'
-                      : 'default'
-                }
-                isAnimated={false}
-              />
-
-              {(() => {
-                const hasActive = appUser?.stripeSubscriptions?.some(
-                  s => s.status === 'ACTIVE'
-                )
-                const gatedBox = (
-                  <div className='col-span-full relative'>
-                    <div className='blur-sm'>
-                      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
-                        <StatBox
-                          value='???'
-                          label='Current Streak'
-                          icon='🔥'
-                          variant='warning'
-                          isAnimated={false}
-                        />
-                        <StatBox
-                          value='???'
-                          label='Best Streak'
-                          icon='⭐'
-                          variant='success'
-                          isAnimated={false}
-                        />
-                        <StatBox
-                          value='???'
-                          label='Avg Guesses'
-                          icon='🎯'
-                          variant='primary'
-                          isAnimated={false}
-                        />
-                        <StatBox
-                          value='???'
-                          label='Avg Time'
-                          icon='⏱️'
-                          variant='default'
-                          isAnimated={false}
-                        />
-                        <StatBox
-                          value='???'
-                          label='Best Time'
-                          icon='⚡'
-                          variant='warning'
-                          isAnimated={false}
-                        />
-                      </div>
-                    </div>
-                    <div className='absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-gradient-to-br from-white/95 to-gray-50/95 dark:from-gray-900/95 dark:to-gray-800/95 rounded-lg backdrop-blur-sm border border-border'>
-                      <div className='w-12 h-12 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center mb-4'>
-                        <svg
-                          className='h-6 w-6 text-white'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth={2}
-                            d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
-                          />
-                        </svg>
-                      </div>
-                      <p className='text-foreground font-semibold mb-2'>
-                        Premium Statistics
-                      </p>
-                      <p className='text-muted mb-4 max-w-sm'>
-                        Unlock detailed streaks and timing analytics with a
-                        subscription.
-                      </p>
-                      <SubscribeButton />
-                    </div>
-                  </div>
-                )
-
-                if (!hasActive) return gatedBox
-
-                return (
-                  <>
-                    <StatBox
-                      value={
-                        stats.currentStreak !== undefined &&
-                        stats.currentStreak !== null
-                          ? stats.currentStreak
-                          : 0
-                      }
-                      label='Current Streak'
-                      icon='🔥'
-                      delay={300}
-                      variant={
-                        stats.currentStreak !== undefined &&
-                        stats.currentStreak !== null &&
-                        stats.currentStreak >= 5
-                          ? 'warning'
-                          : 'default'
-                      }
-                    />
-                    <StatBox
-                      value={
-                        stats.longestStreak !== undefined &&
-                        stats.longestStreak !== null
-                          ? stats.longestStreak
-                          : 0
-                      }
-                      label='Best Streak'
-                      icon='⭐'
-                      delay={400}
-                      variant='success'
-                    />
-                    <StatBox
-                      value={stats.averageGuesses?.toFixed(1) ?? 'N/A'}
-                      label='Avg Guesses'
-                      icon='🎯'
-                      delay={500}
-                      variant='primary'
-                      isAnimated={false}
-                    />
-                    <StatBox
-                      value={formatTime(stats.averageSolveTimeMs ?? null)}
-                      label='Avg Time'
-                      icon='⏱️'
-                      delay={600}
-                      variant='default'
-                      isAnimated={false}
-                    />
-                    <StatBox
-                      value={formatTime(stats.fastestSolveMs ?? null)}
-                      label='Best Time'
-                      icon='⚡'
-                      delay={700}
-                      variant='warning'
-                      isAnimated={false}
-                    />
-                  </>
-                )
-              })()}
-
-              {/* Enhanced Last Played */}
-              <div className='col-span-full'>
+            {stats && (
+              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+                {/* Enhanced Basic Stats */}
                 <StatBox
-                  value={formatDate(stats.lastPlayedAt ?? null)}
-                  label='Last Played'
-                  icon='📅'
-                  delay={800}
-                  variant='default'
+                  value={stats.totalGames}
+                  label='Total Games'
+                  icon='🎮'
+                  delay={0}
+                  variant='primary'
+                />
+
+                <StatBox
+                  value={stats.gamesWon}
+                  label='Games Won'
+                  icon='🏆'
+                  delay={100}
+                  variant='success'
+                />
+
+                <StatBox
+                  value={`${stats.winRate.toFixed(1)}%`}
+                  label='Win Rate'
+                  icon='📊'
+                  delay={200}
+                  variant={
+                    stats.winRate >= 70
+                      ? 'success'
+                      : stats.winRate >= 50
+                        ? 'warning'
+                        : 'default'
+                  }
                   isAnimated={false}
                 />
+
+                {(() => {
+                  const gatedBox = (
+                    <div className='col-span-full relative'>
+                      <div className='blur-sm'>
+                        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
+                          <StatBox
+                            value='???'
+                            label='Current Streak'
+                            icon='🔥'
+                            variant='warning'
+                            isAnimated={false}
+                          />
+                          <StatBox
+                            value='???'
+                            label='Best Streak'
+                            icon='⭐'
+                            variant='success'
+                            isAnimated={false}
+                          />
+                          <StatBox
+                            value='???'
+                            label='Avg Guesses'
+                            icon='🎯'
+                            variant='primary'
+                            isAnimated={false}
+                          />
+                          <StatBox
+                            value='???'
+                            label='Avg Time'
+                            icon='⏱️'
+                            variant='default'
+                            isAnimated={false}
+                          />
+                          <StatBox
+                            value='???'
+                            label='Best Time'
+                            icon='⚡'
+                            variant='warning'
+                            isAnimated={false}
+                          />
+                        </div>
+                      </div>
+                      <div className='absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-gradient-to-br from-white/95 to-gray-50/95 dark:from-gray-900/95 dark:to-gray-800/95 rounded-lg backdrop-blur-sm border border-border'>
+                        <div className='w-12 h-12 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center mb-4'>
+                          <svg
+                            className='h-6 w-6 text-white'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            stroke='currentColor'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                            />
+                          </svg>
+                        </div>
+                        <p className='text-foreground font-semibold mb-2'>
+                          Premium Statistics
+                        </p>
+                        <p className='text-muted mb-4 max-w-sm'>
+                          Unlock detailed streaks and timing analytics with a
+                          subscription.
+                        </p>
+                        <SubscribeButton />
+                      </div>
+                    </div>
+                  )
+
+                  if (!hasActiveSubscription) return gatedBox
+
+                  return (
+                    <>
+                      <StatBox
+                        value={
+                          stats.currentStreak !== undefined &&
+                          stats.currentStreak !== null
+                            ? stats.currentStreak
+                            : 0
+                        }
+                        label='Current Streak'
+                        icon='🔥'
+                        delay={300}
+                        variant={
+                          stats.currentStreak !== undefined &&
+                          stats.currentStreak !== null &&
+                          stats.currentStreak >= 5
+                            ? 'warning'
+                            : 'default'
+                        }
+                      />
+                      <StatBox
+                        value={
+                          stats.longestStreak !== undefined &&
+                          stats.longestStreak !== null
+                            ? stats.longestStreak
+                            : 0
+                        }
+                        label='Best Streak'
+                        icon='⭐'
+                        delay={400}
+                        variant='success'
+                      />
+                      <StatBox
+                        value={stats.averageGuesses?.toFixed(1) ?? 'N/A'}
+                        label='Avg Guesses'
+                        icon='🎯'
+                        delay={500}
+                        variant='primary'
+                        isAnimated={false}
+                      />
+                      <StatBox
+                        value={formatTime(stats.averageSolveTimeMs ?? null)}
+                        label='Avg Time'
+                        icon='⏱️'
+                        delay={600}
+                        variant='default'
+                        isAnimated={false}
+                      />
+                      <StatBox
+                        value={formatTime(stats.fastestSolveMs ?? null)}
+                        label='Best Time'
+                        icon='⚡'
+                        delay={700}
+                        variant='warning'
+                        isAnimated={false}
+                      />
+                    </>
+                  )
+                })()}
+
+                {/* Enhanced Last Played */}
+                <div className='col-span-full'>
+                  <StatBox
+                    value={formatDate(stats.lastPlayedAt ?? null)}
+                    label='Last Played'
+                    icon='📅'
+                    delay={800}
+                    variant='default'
+                    isAnimated={false}
+                  />
+                </div>
               </div>
-            </div>
-          )}
-        </CardContent>
-      </SignedIn>
+            )}
+          </CardContent>
+        </>
+      )}
     </Card>
   )
 }
