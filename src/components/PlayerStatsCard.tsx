@@ -129,7 +129,9 @@ export function PlayerStatsCard() {
             ? animatedValue
             : displayValue}
         </div>
-        <div className='text-sm text-muted font-medium'>{label}</div>
+        <div className='text-sm text-gray-600 dark:text-gray-300 font-medium'>
+          {label}
+        </div>
       </div>
     )
   }
@@ -153,12 +155,12 @@ export function PlayerStatsCard() {
               />
             </svg>
           </div>
-          <CardTitle className='mb-4 text-foreground'>
+          <CardTitle className='mb-4 text-gray-900 dark:text-gray-100'>
             <span className='bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent'>
               Track Your Progress
             </span>
           </CardTitle>
-          <p className='text-muted mb-6 leading-relaxed max-w-md mx-auto'>
+          <p className='text-gray-600 dark:text-gray-300 mb-6 leading-relaxed max-w-md mx-auto'>
             Sign in to track your puzzle-solving statistics and see your
             progress over time.
           </p>
@@ -184,7 +186,7 @@ export function PlayerStatsCard() {
       ) : (
         <>
           <CardHeader>
-            <CardTitle className='text-foreground flex items-center gap-3'>
+            <CardTitle className='text-gray-900 dark:text-gray-100 flex items-center gap-3'>
               <svg
                 className='h-6 w-6 text-sky-600 dark:text-sky-400'
                 fill='none'
@@ -207,8 +209,8 @@ export function PlayerStatsCard() {
             {isLoading && <Spinner aria-label='Loading statistics' />}
 
             {error && (
-              <div className='p-4 bg-red-50 border border-red-200 rounded-lg'>
-                <p className='text-red-600'>
+              <div className='p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg'>
+                <p className='text-red-700 dark:text-red-300'>
                   Failed to load statistics. Please try again later.
                 </p>
               </div>
@@ -309,7 +311,7 @@ export function PlayerStatsCard() {
                         <p className='text-foreground font-semibold mb-2'>
                           Premium Statistics
                         </p>
-                        <p className='text-muted mb-4 max-w-sm'>
+                        <p className='text-gray-600 dark:text-gray-300 mb-4 max-w-sm'>
                           Unlock detailed streaks and timing analytics with a
                           subscription.
                         </p>

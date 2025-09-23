@@ -21,7 +21,7 @@ function generateDots(count: number, radius: number, center: number) {
 
 function SpinnerComponent({
   size = 40,
-  color = '#555',
+  color = 'currentColor',
   className,
   'aria-label': ariaLabel,
 }: SpinnerProps) {
