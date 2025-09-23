@@ -11,7 +11,7 @@ interface ButtonProps
   loading?: boolean
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
-  animation?: 'none' | 'pulse' | 'bounce' | 'glow'
+  animation?: 'none' | 'pulse' | 'glow'
   ripple?: boolean
 }
 
@@ -69,7 +69,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const child = React.Children.only(children) as React.ReactElement
       return React.cloneElement(child, {
         className: cn(
-          buttonVariants({ variant, size, animation }),
+          buttonVariants({ variant, size }),
           (child.props as React.HTMLAttributes<HTMLElement>)?.className,
           className
         ),
@@ -87,7 +87,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             ref.current = node
           }
         }}
-        className={cn(buttonVariants({ variant, size, animation, className }))}
+        className={cn(buttonVariants({ variant, size, className }))}
         disabled={isDisabled}
         onMouseDown={createRipple}
         {...props}

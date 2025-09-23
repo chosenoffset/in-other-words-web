@@ -1,12 +1,12 @@
 import { cva } from 'class-variance-authority'
 
 export const cardVariants = cva(
-  'rounded-lg border bg-white text-slate-950 shadow-sm transition-all duration-300 interactive-card animate-gpu relative overflow-hidden',
+  'rounded-lg border bg-white text-slate-950 shadow-sm transition-all duration-300 animate-gpu relative overflow-hidden',
   {
     variants: {
       variant: {
         default: 'border-border',
-        game: 'border-border bg-gradient-card hover:shadow-xl hover:shadow-blue-500/5',
+        game: 'border-border bg-gradient-card',
         stats:
           'border-border bg-gradient-to-br from-white to-gray-50 hover:shadow-lg animate-gpu-hover',
         hint: 'border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 hover:shadow-lg hover:shadow-indigo-500/10',
