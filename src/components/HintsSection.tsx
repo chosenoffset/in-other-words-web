@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { PuzzleQuestion } from '@/hooks/schemas'
 import { Button } from '@/components/ui'
+import { usePuzzleHints } from '@/hooks/usePuzzles.ts'
 
 interface HintsSectionProps {
   puzzle: PuzzleQuestion
@@ -36,18 +37,28 @@ const getCategoryDisplayName = (category: string): string => {
 }
 
 export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
+  const numPuzzleHints = puzzle.num_hints || 0
+
   const [isCategoryRevealed, setIsCategoryRevealed] = useState(false)
   const [revealedHints, setRevealedHints] = useState<Set<number>>(new Set())
+  const [requestedHints, setRequestedHints] = useState<Set<number>>(new Set())
+
+  // Single hook to manage all hints - much cleaner!
+  const { data: hints = {}, isLoading } = usePuzzleHints(
+    puzzle.id,
+    requestedHints
+  )
 
   const revealCategory = () => {
     setIsCategoryRevealed(true)
   }
 
   const revealHint = (index: number) => {
+    // Enable the query for this hint
+    setRequestedHints(prev => new Set([...prev, index]))
+    // Mark as revealed so it shows immediately (even while loading)
     setRevealedHints(prev => new Set([...prev, index]))
   }
-
-  const puzzleHints = puzzle.hints || []
 
   return (
     <div className='bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-4'>
@@ -135,7 +146,7 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
       </div>
 
       {/* Simplified Puzzle Hints */}
-      {puzzleHints.length > 0 && (
+      {numPuzzleHints > 0 && (
         <div className='space-y-3'>
           <div className='flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300'>
             <svg
@@ -155,65 +166,73 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
           </div>
 
           <div className='space-y-2'>
-            {puzzleHints.map((hint, index) => (
-              <div key={index} className='space-y-1'>
-                {revealedHints.has(index) ? (
-                  <div className='p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-md'>
-                    <div className='flex items-start gap-2'>
-                      <div className='w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5'>
-                        {index + 1}
+            {Array.from({ length: numPuzzleHints }, (_, index) => {
+              const hintText = hints[index]
+              const isHintLoading =
+                requestedHints.has(index) && isLoading && !hintText
+
+              return (
+                <div key={index} className='space-y-1'>
+                  {revealedHints.has(index) ? (
+                    <div className='p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-md'>
+                      <div className='flex items-start gap-2'>
+                        <div className='w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5'>
+                          {index + 1}
+                        </div>
+                        <p className='text-purple-800 dark:text-purple-200 text-sm leading-relaxed'>
+                          {isHintLoading
+                            ? 'Loading hint...'
+                            : hintText || 'Failed to load hint'}
+                        </p>
                       </div>
-                      <p className='text-purple-800 dark:text-purple-200 text-sm leading-relaxed'>
-                        {hint}
-                      </p>
                     </div>
-                  </div>
-                ) : (
-                  <Button
-                    variant={hasIncorrectGuess ? 'hint-reveal' : 'secondary'}
-                    onClick={() => revealHint(index)}
-                    disabled={!hasIncorrectGuess}
-                    className='w-full justify-start text-sm'
-                    size='sm'
-                  >
-                    <div className='flex items-center gap-2'>
-                      <div
-                        className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
-                          hasIncorrectGuess
-                            ? 'bg-white dark:bg-gray-200 text-purple-600 dark:text-purple-700'
-                            : 'bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-300'
-                        }`}
-                      >
-                        {index + 1}
-                      </div>
-                      <span className='text-xs'>
-                        {!hasIncorrectGuess
-                          ? `Hint ${index + 1} (locked)`
-                          : `Click to reveal hint ${index + 1}`}
-                      </span>
-                      {!hasIncorrectGuess && (
-                        <svg
-                          className='h-3 w-3 ml-auto'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
+                  ) : (
+                    <Button
+                      variant={hasIncorrectGuess ? 'hint-reveal' : 'secondary'}
+                      onClick={() => revealHint(index)}
+                      disabled={!hasIncorrectGuess}
+                      className='w-full justify-start text-sm'
+                      size='sm'
+                    >
+                      <div className='flex items-center gap-2'>
+                        <div
+                          className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+                            hasIncorrectGuess
+                              ? 'bg-white dark:bg-gray-200 text-purple-600 dark:text-purple-700'
+                              : 'bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-300'
+                          }`}
                         >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth={2}
-                            d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
-                          />
-                        </svg>
-                      )}
-                    </div>
-                  </Button>
-                )}
-              </div>
-            ))}
+                          {index + 1}
+                        </div>
+                        <span className='text-xs'>
+                          {!hasIncorrectGuess
+                            ? `Hint ${index + 1} (locked)`
+                            : `Click to reveal hint ${index + 1}`}
+                        </span>
+                        {!hasIncorrectGuess && (
+                          <svg
+                            className='h-3 w-3 ml-auto'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            stroke='currentColor'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    </Button>
+                  )}
+                </div>
+              )
+            })}
           </div>
 
-          {!hasIncorrectGuess && puzzleHints.length > 0 && (
+          {!hasIncorrectGuess && numPuzzleHints > 0 && (
             <div className='mt-3 p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-md'>
               <div className='flex items-center gap-2'>
                 <svg

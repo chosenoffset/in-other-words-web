@@ -171,3 +171,46 @@ export const useGiveUpPuzzle = () => {
     },
   })
 }
+
+export const usePuzzleHints = (
+  puzzleId: string,
+  requestedHints: Set<number>
+) => {
+  const { getToken } = useAuth()
+
+  return useQuery({
+    queryKey: ['puzzleHints', puzzleId, Array.from(requestedHints).sort()],
+    queryFn: async () => {
+      if (requestedHints.size === 0) return {}
+
+      const token = await getToken()
+      const hints: Record<number, string> = {}
+
+      // Fetch all requested hints in parallel
+      const promises = Array.from(requestedHints).map(async hintIndex => {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/public/puzzle-of-the-day/${puzzleId}/hint/${hintIndex}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          return { index: hintIndex, data: response.data.data }
+        } catch (error) {
+          console.error(`Failed to get hint ${hintIndex}:`, error)
+          return { index: hintIndex, data: null }
+        }
+      })
+
+      const results = await Promise.all(promises)
+      results.forEach(({ index, data }) => {
+        hints[index] = data
+      })
+
+      return hints
+    },
+    enabled: requestedHints.size > 0 && !!puzzleId,
+  })
+}

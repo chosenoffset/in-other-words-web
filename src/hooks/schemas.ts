@@ -100,7 +100,7 @@ export type Puzzle = z.infer<typeof puzzleSchema>
 export const puzzleQuestionSchema = z.object({
   id: z.string(),
   question: z.string(),
-  hints: z.array(z.string()).optional(),
+  num_hints: z.number().optional(),
   category: z.enum([
     'MUSIC',
     'MOVIES_TV',
