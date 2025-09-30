@@ -65,17 +65,17 @@ function Landing() {
       >
         <header
           ref={headerRef}
-          className={`text-center mb-7 transition-all duration-1000 transform ${
+          className={`text-center mb-7 transition-all duration-600 transform ${
             isVisible.header
               ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
+              : 'opacity-0 translate-y-4'
           }`}
         >
           <h1
-            className={`text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight text-foreground mb-3 transition-all duration-1000 delay-200 transform ${
+            className={`text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight text-foreground mb-3 transition-all duration-600 delay-200 transform ${
               isVisible.header
                 ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 translate-y-4 scale-95'
+                : 'opacity-0 translate-y-2 scale-98'
             }`}
           >
             <span className='bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400 bg-clip-text text-transparent'>
@@ -94,29 +94,29 @@ function Landing() {
           <Card
             ref={cardRef}
             variant='game'
-            className={`w-full min-h-[260px] shadow-lg transition-all duration-1000 transform ${
+            className={`w-full min-h-[260px] shadow-lg transition-all duration-600 transform ${
               isVisible.card
                 ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 translate-y-12 scale-95'
+                : 'opacity-0 translate-y-6 scale-98'
             }`}
             aria-label='Game area'
           >
             <div className='p-6 grid grid-cols-1 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_360px] gap-4 lg:gap-6 items-start w-full h-full'>
               <div
-                className={`min-w-0 flex flex-col gap-6 transition-all duration-1000 delay-300 transform ${
+                className={`min-w-0 flex flex-col gap-6 transition-all duration-600 delay-300 transform ${
                   isVisible.card
                     ? 'opacity-100 translate-x-0'
-                    : 'opacity-0 -translate-x-8'
+                    : 'opacity-0 -translate-x-4'
                 }`}
               >
                 <PuzzleOfTheDay puzzle={puzzle} />
                 <AnswerSubmission onSubmissionResult={handleSubmissionResult} />
               </div>
               <div
-                className={`lg:order-2 transition-all duration-1000 delay-600 transform ${
+                className={`lg:order-2 transition-all duration-600 delay-600 transform ${
                   isVisible.card
                     ? 'opacity-100 translate-x-0'
-                    : 'opacity-0 translate-x-8'
+                    : 'opacity-0 translate-x-4'
                 }`}
               >
                 <HintsSection
