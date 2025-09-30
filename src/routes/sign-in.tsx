@@ -192,27 +192,22 @@ function RegisterClient() {
   return (
     <main className='container'>
       <section className='shell'>
-        <div
-          className='shell-inner'
-          style={{ maxWidth: 440, margin: '0 auto' }}
-        >
-          <h1 className='title' style={{ textAlign: 'center' }}>
+        <div className='shell-inner max-w-[440px] mx-auto'>
+          <h1 className='text-2xl sm:text-3xl font-bold text-center mb-6 text-gray-900 dark:text-gray-100'>
             Sign in or create an account
           </h1>
           {error && (
-            <div
-              className='subtitle'
-              style={{ color: '#b00020', textAlign: 'center' }}
-            >
+            <div className='text-center text-red-600 dark:text-red-400 mb-4'>
               {error}
             </div>
           )}
           {!showCodeInput ? (
-            <div style={{ display: 'grid', gap: 12 }}>
+            <div className='grid gap-3'>
               <button
                 aria-label='Continue with Google'
                 onClick={() => handleOAuth('oauth_google')}
                 disabled={isLoading}
+                className='w-full px-4 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
               >
                 Continue with Google
               </button>
@@ -220,6 +215,7 @@ function RegisterClient() {
                 aria-label='Continue with Facebook'
                 onClick={() => handleOAuth('oauth_facebook')}
                 disabled={isLoading}
+                className='w-full px-4 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
               >
                 Continue with Facebook
               </button>
@@ -227,13 +223,14 @@ function RegisterClient() {
                 aria-label='Continue with Discord'
                 onClick={() => handleOAuth('oauth_discord')}
                 disabled={isLoading}
+                className='w-full px-4 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
               >
                 Continue with Discord
               </button>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{ flex: 1, height: 1, background: '#e5e7eb' }} />
-                <span style={{ color: '#6b7280' }}>or</span>
-                <div style={{ flex: 1, height: 1, background: '#e5e7eb' }} />
+              <div className='flex items-center gap-2 my-2'>
+                <div className='flex-1 h-px bg-gray-300 dark:bg-gray-600' />
+                <span className='text-gray-500 dark:text-gray-400 text-sm'>or</span>
+                <div className='flex-1 h-px bg-gray-300 dark:bg-gray-600' />
               </div>
               <form
                 onSubmit={e => {
@@ -248,31 +245,23 @@ function RegisterClient() {
                   type='email'
                   placeholder='Email'
                   required
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #d1d5db',
-                    borderRadius: 8,
-                  }}
+                  className='w-full px-4 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 placeholder-gray-500 dark:placeholder-gray-400'
                 />
                 <button
                   type='submit'
                   disabled={isLoading}
-                  style={{ marginTop: 12 }}
+                  className='w-full mt-3 px-4 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-lg hover:shadow-lg hover:shadow-sky-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
                 >
                   Continue
                 </button>
               </form>
             </div>
           ) : (
-            <form
-              onSubmit={handleCodeSubmit}
-              style={{ display: 'grid', gap: 12 }}
-            >
-              <label>Enter the 6-digit code sent to {email}</label>
-              <div
-                style={{ display: 'flex', gap: 8, justifyContent: 'center' }}
-              >
+            <form onSubmit={handleCodeSubmit} className='grid gap-4'>
+              <label className='text-center text-gray-700 dark:text-gray-300'>
+                Enter the 6-digit code sent to {email}
+              </label>
+              <div className='flex gap-2 justify-center'>
                 {[0, 1, 2, 3, 4, 5].map(i => (
                   <input
                     key={i}
@@ -284,18 +273,15 @@ function RegisterClient() {
                     onChange={e => onCodeChange(i, e.target.value)}
                     onKeyDown={e => onKeyDown(e, i)}
                     onPaste={e => onPaste(e, i)}
-                    style={{
-                      width: 44,
-                      height: 56,
-                      textAlign: 'center',
-                      fontSize: 20,
-                      border: '2px solid #d1d5db',
-                      borderRadius: 8,
-                    }}
+                    className='w-11 h-14 text-center text-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20'
                   />
                 ))}
               </div>
-              <button type='submit' disabled={isLoading}>
+              <button
+                type='submit'
+                disabled={isLoading}
+                className='w-full px-4 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-lg hover:shadow-lg hover:shadow-sky-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+              >
                 Verify
               </button>
             </form>
