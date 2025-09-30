@@ -190,7 +190,7 @@ function RegisterClient() {
   }
 
   return (
-    <main className='min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center py-12 px-4'>
+    <main className='min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex justify-center py-12 px-4'>
       <div className='w-full max-w-[440px]'>
           <h1 className='text-2xl sm:text-3xl font-bold text-center mb-6 text-gray-900 dark:text-gray-100'>
             Sign in or create an account
