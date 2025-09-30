@@ -94,14 +94,14 @@ function Landing() {
           <Card
             ref={cardRef}
             variant='game'
-            className={`w-full min-h-[260px] shadow-xl transition-all duration-1000 transform ${
+            className={`w-full min-h-[260px] shadow-lg transition-all duration-1000 transform ${
               isVisible.card
                 ? 'opacity-100 translate-y-0 scale-100'
                 : 'opacity-0 translate-y-12 scale-95'
             }`}
             aria-label='Game area'
           >
-            <div className='p-6 grid grid-cols-1 lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-6 lg:gap-8 items-start w-full h-full'>
+            <div className='p-6 grid grid-cols-1 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_360px] gap-4 lg:gap-6 items-start w-full h-full'>
               <div
                 className={`min-w-0 flex flex-col gap-6 transition-all duration-1000 delay-300 transform ${
                   isVisible.card

@@ -8,13 +8,13 @@ export const cardVariants = cva(
         default: 'border-border',
         game: 'border-border bg-white dark:bg-gray-900',
         stats:
-          'border-border bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 hover:shadow-lg animate-gpu-hover',
-        hint: 'border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 hover:shadow-lg hover:shadow-indigo-500/10',
-        floating: 'border-border shadow-xl animate-float',
+          'border-border bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 hover:shadow-md animate-gpu-hover',
+        hint: 'border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 hover:shadow-md hover:shadow-indigo-500/10',
+        floating: 'border-border shadow-lg animate-float',
         interactive:
-          'border-border hover:shadow-xl hover:shadow-blue-500/10 cursor-pointer animate-gpu-hover',
+          'border-border hover:shadow-md hover:shadow-blue-500/10 cursor-pointer animate-gpu-hover',
         premium:
-          'border-gradient-to-r from-amber-200 to-orange-200 bg-gradient-to-br from-amber-50 to-orange-50 hover:shadow-xl hover:shadow-amber-500/20',
+          'border-gradient-to-r from-amber-200 to-orange-200 bg-gradient-to-br from-amber-50 to-orange-50 hover:shadow-md hover:shadow-amber-500/20',
       },
       size: {
         sm: 'p-4',

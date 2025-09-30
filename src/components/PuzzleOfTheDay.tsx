@@ -6,7 +6,7 @@ interface PuzzleOfTheDayProps {
 
 export function PuzzleOfTheDay({ puzzle }: PuzzleOfTheDayProps) {
   return (
-    <div className='space-y-6'>
+    <div className='space-y-4'>
       {/* Enhanced Header with Gradient Background */}
       <div className='text-center space-y-3'>
         <div className='inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-full shadow-sm animate-fade-in'>
