@@ -145,7 +145,7 @@ export function AnswerSubmission({
           <div className='space-y-4'>
             <label
               htmlFor='answer-input'
-              className='block text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100'
+              className='block text-sm lg:text-base font-semibold text-gray-900 dark:text-gray-100'
             >
               Your Answer
             </label>
@@ -158,7 +158,7 @@ export function AnswerSubmission({
                   onChange={handleInputChange}
                   placeholder='Enter your answer...'
                   className={`
-                    w-full px-6 py-4 text-lg lg:text-xl border-2 border-gray-300 dark:border-gray-600 rounded-xl
+                    w-full px-6 py-4 text-base lg:text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl
                     bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
                     placeholder-gray-500 dark:placeholder-gray-400
                     transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-400

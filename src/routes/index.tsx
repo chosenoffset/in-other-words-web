@@ -72,7 +72,7 @@ function Landing() {
           }`}
         >
           <h1
-            className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-foreground mb-3 transition-all duration-1000 delay-200 transform ${
+            className={`text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight text-foreground mb-3 transition-all duration-1000 delay-200 transform ${
               isVisible.header
                 ? 'opacity-100 translate-y-0 scale-100'
                 : 'opacity-0 translate-y-4 scale-95'
