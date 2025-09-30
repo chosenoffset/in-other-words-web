@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority'
 
 export const cardVariants = cva(
-  'rounded-lg border bg-white text-slate-950 dark:text-slate-100 dark:bg-gray-900 shadow-sm transition-all duration-300 animate-gpu relative overflow-hidden',
+  'rounded-lg bg-white text-slate-950 dark:text-slate-100 dark:bg-gray-900 shadow-sm transition-all duration-300 animate-gpu relative overflow-hidden',
   {
     variants: {
       variant: {

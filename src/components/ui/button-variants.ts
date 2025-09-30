@@ -2,33 +2,33 @@ import { cva } from 'class-variance-authority'
 
 export const buttonVariants = cva(
   // Enhanced base classes with improved animations and micro-interactions
-  'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none ring-offset-background border relative overflow-hidden group interactive-button animate-gpu cursor-pointer',
+  'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none ring-offset-background relative overflow-hidden group interactive-button animate-gpu cursor-pointer',
   {
     variants: {
       variant: {
         // Enhanced existing variants with gradient and animation effects
         primary:
-          'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg hover:shadow-xl hover:shadow-sky-500/25 active:translate-y-0 disabled:opacity-60 before:absolute before:inset-0 before:bg-gradient-to-r before:from-sky-400 before:to-blue-500 before:opacity-0 hover:before:opacity-100 before:transition-opacity',
+          'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg hover:shadow-xl hover:shadow-sky-500/25 active:translate-y-0 disabled:opacity-60 before:absolute before:inset-0 before:bg-gradient-to-r before:from-sky-400 before:to-blue-500 before:opacity-0 hover:before:opacity-100 before:transition-opacity',
 
         secondary:
-          'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:shadow-md transition-all duration-300',
+          'border bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:shadow-md transition-all duration-300',
 
         destructive:
-          'border-red-600 bg-gradient-to-r from-red-600 to-red-700 text-white hover:shadow-lg hover:shadow-red-500/25',
+          'bg-gradient-to-r from-red-600 to-red-700 text-white hover:shadow-lg hover:shadow-red-500/25',
 
         ghost:
-          'bg-transparent text-gray-500 dark:text-gray-400 border-gray-300 dark:border-gray-600 hover:text-red-600 hover:border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300',
+          'border bg-transparent text-gray-500 dark:text-gray-400 border-gray-300 dark:border-gray-600 hover:text-red-600 hover:border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300',
 
         signin:
-          'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25',
+          'bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25',
 
         submit:
-          'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 disabled:bg-none disabled:bg-slate-400 disabled:border-slate-400 disabled:text-slate-500 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:border-slate-400 disabled:hover:bg-slate-400 text-base font-medium',
+          'bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 disabled:bg-none disabled:bg-slate-400 disabled:text-slate-500 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:bg-slate-400 text-base font-medium',
 
         retry:
-          'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 text-sm',
+          'bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 text-sm',
 
-        hint: 'border-sky-500 bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 disabled:bg-gray-100 disabled:border-gray-300 disabled:text-slate-500',
+        hint: 'bg-gradient-to-r from-sky-500 to-blue-600 text-white hover:shadow-lg hover:shadow-sky-500/25 disabled:bg-gray-100 disabled:text-slate-500',
 
         // New enhanced game-specific variants
         'game-primary':
