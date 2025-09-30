@@ -4,6 +4,7 @@ export function CmsNav() {
   const links: AppNavLink[] = [
     { to: '/cms', label: 'Overview', exact: true },
     { to: '/cms/puzzles', label: 'Puzzles' },
+    { to: '/cms/users', label: 'Users' },
   ]
 
   return (
