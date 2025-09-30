@@ -61,9 +61,9 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
   }
 
   return (
-    <div className='bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-4'>
+    <div className='bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 space-y-4 shadow-sm'>
       {/* Simplified Header */}
-      <div className='flex items-center gap-2 pb-2 border-b border-gray-200 dark:border-gray-600'>
+      <div className='flex items-center gap-2 pb-3 mb-1'>
         <div className='w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center'>
           <svg
             className='h-3 w-3 text-white'
@@ -104,7 +104,7 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
         </div>
 
         {isCategoryRevealed ? (
-          <div className='p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-md'>
+          <div className='p-3 bg-blue-50 dark:bg-blue-900/30 rounded-md'>
             <div className='flex items-center gap-2'>
               <span className='text-lg'>
                 {getCategoryIcon(puzzle.category)}
@@ -174,7 +174,7 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
               return (
                 <div key={index} className='space-y-1'>
                   {revealedHints.has(index) ? (
-                    <div className='p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-md'>
+                    <div className='p-3 bg-purple-50 dark:bg-purple-900/30 rounded-md'>
                       <div className='flex items-start gap-2'>
                         <div className='w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5'>
                           {index + 1}
@@ -233,7 +233,7 @@ export function HintsSection({ puzzle, hasIncorrectGuess }: HintsSectionProps) {
           </div>
 
           {!hasIncorrectGuess && numPuzzleHints > 0 && (
-            <div className='mt-3 p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-md'>
+            <div className='mt-3 p-2 bg-yellow-50 dark:bg-yellow-900/30 rounded-md'>
               <div className='flex items-center gap-2'>
                 <svg
                   className='h-3 w-3 text-gray-600 dark:text-gray-400 flex-shrink-0'

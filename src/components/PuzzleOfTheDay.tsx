@@ -9,7 +9,7 @@ export function PuzzleOfTheDay({ puzzle }: PuzzleOfTheDayProps) {
     <div className='space-y-6'>
       {/* Enhanced Header with Gradient Background */}
       <div className='text-center space-y-3'>
-        <div className='inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-full border border-gray-300 dark:border-gray-600 animate-fade-in'>
+        <div className='inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-full shadow-sm animate-fade-in'>
           <svg
             className='h-4 w-4 text-gray-700 dark:text-sky-400'
             fill='none'
@@ -40,27 +40,15 @@ export function PuzzleOfTheDay({ puzzle }: PuzzleOfTheDayProps) {
 
       {/* Enhanced Clue Section with Better Visual Hierarchy */}
       <div className='relative'>
-        <div className='bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-6 shadow-sm animate-reveal-hint'>
-          {/* Quote Icon */}
-          <div className='absolute -top-2 -left-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center shadow-lg'>
-            <svg
-              className='h-4 w-4 text-white'
-              fill='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path d='M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z' />
-            </svg>
+        <div className='bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md animate-reveal-hint'>
+          {/* Subtle Quote Icon */}
+          <div className='absolute -top-1 -left-1 text-sky-500/20 text-4xl leading-none select-none pointer-events-none'>
+            "
           </div>
 
-          {/* Mirrored Quote Icon */}
-          <div className='absolute -bottom-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center shadow-lg transform rotate-180'>
-            <svg
-              className='h-4 w-4 text-white'
-              fill='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path d='M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z' />
-            </svg>
+          {/* Subtle Quote Icon */}
+          <div className='absolute -bottom-1 -right-1 text-sky-500/20 text-4xl leading-none select-none pointer-events-none'>
+            "
           </div>
 
           <p className='text-base sm:text-lg lg:text-xl font-medium text-gray-900 dark:text-gray-100 leading-relaxed pl-4 pr-4'>

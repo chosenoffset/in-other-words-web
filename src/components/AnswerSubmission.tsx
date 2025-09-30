@@ -158,7 +158,7 @@ export function AnswerSubmission({
                   onChange={handleInputChange}
                   placeholder='Enter your answer...'
                   className={`
-                    w-full px-6 py-4 text-base lg:text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl
+                    w-full px-6 py-4 text-base lg:text-lg border border-gray-300 dark:border-gray-600 rounded-xl
                     bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
                     placeholder-gray-500 dark:placeholder-gray-400
                     transition-all duration-300 focus:border-blue-500 dark:focus:border-blue-400
@@ -201,11 +201,11 @@ export function AnswerSubmission({
       {submissionResult && (
         <div
           className={`
-            rounded-lg p-6 border-2 shadow-lg
+            rounded-lg p-6 shadow-lg
             ${
               submissionResult.isCorrect
-                ? 'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 border-emerald-200 dark:border-emerald-700'
-                : 'bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20 border-red-200 dark:border-red-700'
+                ? 'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20'
+                : 'bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20'
             }
           `}
         >
@@ -253,7 +253,7 @@ export function AnswerSubmission({
           </div>
 
           {submissionResult.hint && submissionResult.hint.length > 0 && (
-            <div className='mt-4 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-blue-200 dark:border-blue-700 animate-fade-in'>
+            <div className='mt-4 p-4 bg-blue-50/80 dark:bg-blue-900/30 rounded-lg animate-fade-in'>
               <h4 className='text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2 flex items-center gap-2'>
                 <svg
                   className='h-4 w-4'
@@ -281,7 +281,7 @@ export function AnswerSubmission({
               className='mt-6 text-center space-y-3 animate-fade-in'
               style={{ animationDelay: '0.3s' }}
             >
-              <div className='inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 rounded-full border border-emerald-200 dark:border-emerald-700'>
+              <div className='inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 rounded-full shadow-sm'>
                 <svg
                   className='h-5 w-5 text-emerald-600 dark:text-emerald-400'
                   fill='none'
