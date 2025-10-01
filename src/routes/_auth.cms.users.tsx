@@ -69,7 +69,7 @@ function CmsUsers() {
 
           <Button
             type='submit'
-            variant='danger'
+            variant='submit'
             disabled={deleteAttempts.isPending || !userId.trim()}
           >
             {deleteAttempts.isPending ? 'Deleting...' : 'Delete All Attempts'}
