@@ -33,7 +33,9 @@ function CmsUsers() {
       setUserId('')
     } catch (error) {
       console.error('Failed to delete user attempts:', error)
-      alert('Failed to delete user attempts. Please check the console for details.')
+      alert(
+        'Failed to delete user attempts. Please check the console for details.'
+      )
     }
   }
 
@@ -42,10 +44,12 @@ function CmsUsers() {
       <h1 className='text-2xl font-bold mb-6'>User Management</h1>
 
       <section className='mb-8'>
-        <h2 className='text-xl font-semibold mb-4'>Delete User Puzzle Attempts</h2>
+        <h2 className='text-xl font-semibold mb-4'>
+          Delete User Puzzle Attempts
+        </h2>
         <p className='text-gray-600 dark:text-gray-400 mb-4'>
-          Remove all puzzle attempts for a specific user. This will permanently delete
-          their attempt history.
+          Remove all puzzle attempts for a specific user. This will permanently
+          delete their attempt history.
         </p>
 
         <form onSubmit={handleDelete} className='flex flex-col gap-4 max-w-md'>
@@ -77,7 +81,8 @@ function CmsUsers() {
 
           {deleteAttempts.isError && (
             <p className='text-red-600 dark:text-red-400 text-sm'>
-              Error: {deleteAttempts.error?.message || 'Failed to delete attempts'}
+              Error:{' '}
+              {deleteAttempts.error?.message || 'Failed to delete attempts'}
             </p>
           )}
         </form>

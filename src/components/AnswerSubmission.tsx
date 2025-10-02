@@ -4,18 +4,15 @@ import type { PuzzleResult } from '@/hooks/schemas'
 import { useGameContext } from '@/hooks/useGameContext'
 import { useUserContext } from '@/hooks/useUserContext'
 import { useUserSubscription } from '@/hooks/useUserSubscription'
-import { GiveUpButton } from './GiveUpButton'
 import { Button } from '@/components/ui'
 import { SubscriptionCTA } from './SubscriptionCTA'
 import { SignInCTA } from './SignInCTA'
 
 interface AnswerSubmissionProps {
-  onSubmissionResult?: (result: PuzzleResult) => void
+  onGuessSubmitted?: (guessText: string, isCorrect: boolean) => void
 }
 
-export function AnswerSubmission({
-  onSubmissionResult,
-}: AnswerSubmissionProps) {
+export function AnswerSubmission({ onGuessSubmitted }: AnswerSubmissionProps) {
   // Get centralized state
   const {
     currentPuzzle: puzzle,
@@ -68,7 +65,9 @@ export function AnswerSubmission({
       }
 
       setSubmissionResult(result)
-      onSubmissionResult?.(result)
+
+      // Notify parent component of the guess
+      onGuessSubmitted?.(userAnswer.trim(), result.isCorrect)
 
       // Trigger animation based on result
       setShowAnimation(result.isCorrect ? 'correct' : 'incorrect')
@@ -93,16 +92,6 @@ export function AnswerSubmission({
     if (submissionResult) {
       setSubmissionResult(null)
     }
-  }
-
-  const handleGiveUp = () => {
-    // Mark as gave up with a special result
-    const giveUpResult: PuzzleResult = {
-      isCorrect: false,
-      message: 'You gave up on this puzzle. The answer will be revealed.',
-    }
-    setSubmissionResult(giveUpResult)
-    onSubmissionResult?.(giveUpResult)
   }
 
   if (!puzzle) {
@@ -198,55 +187,29 @@ export function AnswerSubmission({
         </form>
       )}
 
-      {submissionResult && (
-        <div
-          className={`
-            rounded-lg p-6 shadow-lg
-            ${
-              submissionResult.isCorrect
-                ? 'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20'
-                : 'bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20'
-            }
-          `}
-        >
+      {submissionResult && submissionResult.isCorrect && (
+        <div className='rounded-lg p-6 shadow-lg bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20'>
           {/* Particle effects container for success */}
-          {submissionResult.isCorrect && (
-            <div className='particles-container'>
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i}
-                  className='particle'
-                  style={{
-                    left: `${20 + i * 10}%`,
-                    animationDelay: `${i * 100}ms`,
-                    background: `linear-gradient(45deg, hsl(${120 + i * 30}, 70%, 60%), hsl(${140 + i * 30}, 70%, 50%))`,
-                  }}
-                />
-              ))}
-            </div>
-          )}
+          <div className='particles-container'>
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className='particle'
+                style={{
+                  left: `${20 + i * 10}%`,
+                  animationDelay: `${i * 100}ms`,
+                  background: `linear-gradient(45deg, hsl(${120 + i * 30}, 70%, 60%), hsl(${140 + i * 30}, 70%, 50%))`,
+                }}
+              />
+            ))}
+          </div>
 
-          <div className={`flex items-start gap-4`}>
-            <div
-              className={`
-              flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shadow-lg
-              ${
-                submissionResult.isCorrect
-                  ? 'bg-gradient-to-r from-emerald-500 to-green-500'
-                  : 'bg-gradient-to-r from-red-500 to-rose-500'
-              }
-            `}
-            >
-              {submissionResult.isCorrect ? '✓' : '✗'}
+          <div className='flex items-start gap-4'>
+            <div className='flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shadow-lg bg-gradient-to-r from-emerald-500 to-green-500'>
+              ✓
             </div>
             <div className='flex-1'>
-              <p
-                className={`text-lg font-semibold ${
-                  submissionResult.isCorrect
-                    ? 'text-emerald-800 dark:text-emerald-200'
-                    : 'text-red-800 dark:text-red-200'
-                }`}
-              >
+              <p className='text-lg font-semibold text-emerald-800 dark:text-emerald-200'>
                 {submissionResult.message}
               </p>
             </div>
@@ -276,39 +239,37 @@ export function AnswerSubmission({
             </div>
           )}
 
-          {submissionResult.isCorrect && (
-            <div
-              className='mt-6 text-center space-y-3 animate-fade-in'
-              style={{ animationDelay: '0.3s' }}
-            >
-              <div className='inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 rounded-full shadow-sm'>
-                <svg
-                  className='h-5 w-5 text-emerald-600 dark:text-emerald-400'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
-                  />
-                </svg>
-                <span className='font-semibold text-emerald-700 dark:text-emerald-300'>
-                  Puzzle completed in{' '}
-                  {attemptStatus ? attemptStatus.attemptCount : 1} attempt
-                  {(attemptStatus ? attemptStatus.attemptCount : 1) !== 1
-                    ? 's'
-                    : ''}
-                  !
-                </span>
-              </div>
-              <p className='text-muted'>
-                Come back tomorrow for the next puzzle!
-              </p>
+          <div
+            className='mt-6 text-center space-y-3 animate-fade-in'
+            style={{ animationDelay: '0.3s' }}
+          >
+            <div className='inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-100 to-green-100 dark:from-emerald-900/30 dark:to-green-900/30 rounded-full shadow-sm'>
+              <svg
+                className='h-5 w-5 text-emerald-600 dark:text-emerald-400'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                />
+              </svg>
+              <span className='font-semibold text-emerald-700 dark:text-emerald-300'>
+                Puzzle completed in{' '}
+                {attemptStatus ? attemptStatus.attemptCount : 1} attempt
+                {(attemptStatus ? attemptStatus.attemptCount : 1) !== 1
+                  ? 's'
+                  : ''}
+                !
+              </span>
             </div>
-          )}
+            <p className='text-muted'>
+              Come back tomorrow for the next puzzle!
+            </p>
+          </div>
         </div>
       )}
 
@@ -360,18 +321,6 @@ export function AnswerSubmission({
             )}
         </div>
       </div>
-
-      {/* Only show give up button if puzzle is not completed and user has made at least one attempt */}
-      {attemptStatus &&
-        attemptStatus.attemptCount > 0 &&
-        !submissionResult?.isCorrect &&
-        !isOutOfGuesses && (
-          <GiveUpButton
-            puzzleId={puzzle.id}
-            disabled={submissionLoading}
-            onGiveUp={handleGiveUp}
-          />
-        )}
     </div>
   )
 }
