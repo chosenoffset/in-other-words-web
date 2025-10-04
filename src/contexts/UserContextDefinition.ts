@@ -10,7 +10,7 @@ export interface UserContextValue {
   isSuperAdmin: boolean
 
   // Subscription State (matches existing PlayerStatsCard logic)
-  hasActiveSubscription: boolean // derived from stripeSubscriptions.some(s => s.status === 'ACTIVE')
+  hasActiveSubscription: boolean // derived from stripeSubscription.status === 'ACTIVE'
 
   // Loading States
   isLoading: boolean

@@ -25,7 +25,7 @@ export const useCreateSubscription = () => {
       return parsed.redirectUrl
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] })
     },
   })
 }
@@ -48,7 +48,7 @@ export const useCreateBillingPortal = () => {
       return parsed.redirectUrl
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] })
     },
   })
 }

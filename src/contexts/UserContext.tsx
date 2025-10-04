@@ -20,7 +20,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
 
   // Derive subscription status from existing data structure
   const hasActiveSubscription = Boolean(
-    appUser?.stripeSubscriptions?.some(s => s.status === 'ACTIVE')
+    appUser?.stripeSubscription?.status === 'ACTIVE'
   )
 
   const value: UserContextValue = {
