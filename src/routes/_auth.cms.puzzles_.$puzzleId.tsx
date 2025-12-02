@@ -136,10 +136,10 @@ function PuzzleDetailPage() {
   }
 
   return (
-    <div>
+    <div style={{ maxWidth: '100%', width: '100%', padding: '0 20px' }}>
       <div
         className='flex-container'
-        style={{ justifyContent: 'space-between', marginBottom: 12 }}
+        style={{ justifyContent: 'space-between', marginBottom: 24 }}
       >
         <h1 style={{ margin: 0 }}>{isNew ? 'Create Puzzle' : 'Edit Puzzle'}</h1>
         <Link to='/cms/puzzles' className='nav-link'>
@@ -147,23 +147,25 @@ function PuzzleDetailPage() {
         </Link>
       </div>
 
-      <form onSubmit={handleSubmit} className='shell' style={{ padding: 16 }}>
-        <div className='input-group'>
-          <label className='answer-label' htmlFor='question-input'>
+      <form onSubmit={handleSubmit} className='shell' style={{ padding: 24 }}>
+        <div className='input-group' style={{ marginBottom: 24 }}>
+          <label className='answer-label' htmlFor='question-input' style={{ marginBottom: 8, display: 'block' }}>
             Question
           </label>
-          <input
+          <textarea
             id='question-input'
             className='answer-input'
             name='question'
             value={formState.question}
             onChange={handleChange}
             required
+            rows={3}
+            style={{ padding: '12px', resize: 'vertical', minHeight: '80px', width: '100%' }}
           />
         </div>
 
-        <div className='input-group' style={{ marginTop: 16 }}>
-          <label className='answer-label' htmlFor='answer-input'>
+        <div className='input-group' style={{ marginBottom: 24 }}>
+          <label className='answer-label' htmlFor='answer-input' style={{ marginBottom: 8, display: 'block' }}>
             Answer
           </label>
           <input
@@ -173,30 +175,35 @@ function PuzzleDetailPage() {
             value={formState.answer}
             onChange={handleChange}
             required
+            style={{ padding: '12px', width: '100%' }}
           />
         </div>
 
-        <div className='input-group' style={{ marginTop: 16 }}>
-          <h3 className='answer-label'>Hints</h3>
+        <div className='input-group' style={{ marginBottom: 24 }}>
+          <h3 className='answer-label' style={{ marginBottom: 12 }}>Hints</h3>
           <div
             className='flex-container'
-            style={{ flexDirection: 'column', gap: 12 }}
+            style={{ flexDirection: 'column', gap: 16 }}
           >
             {formState.hints.map((hint, index) => (
-              <div key={index} className='flex-container' style={{ gap: 8 }}>
-                <input
-                  className='answer-input'
-                  value={hint}
-                  onChange={e => {
-                    const value = e.target.value
-                    setFormState(prev => {
-                      const next = [...prev.hints]
-                      next[index] = value
-                      return { ...prev, hints: next }
-                    })
-                  }}
-                  placeholder={`Hint ${index + 1}`}
-                />
+              <div key={index} className='flex-container' style={{ gap: 12, alignItems: 'flex-start' }}>
+                <div style={{ flex: 1 }}>
+                  <textarea
+                    className='answer-input'
+                    value={hint}
+                    onChange={e => {
+                      const value = e.target.value
+                      setFormState(prev => {
+                        const next = [...prev.hints]
+                        next[index] = value
+                        return { ...prev, hints: next }
+                      })
+                    }}
+                    placeholder={`Hint ${index + 1}`}
+                    rows={2}
+                    style={{ padding: '12px', resize: 'vertical', width: '100%' }}
+                  />
+                </div>
                 <button
                   type='button'
                   className='retry-button'
@@ -206,6 +213,7 @@ function PuzzleDetailPage() {
                       hints: prev.hints.filter((_, i) => i !== index),
                     }))
                   }
+                  style={{ padding: '10px 16px', whiteSpace: 'nowrap' }}
                 >
                   Remove
                 </button>
@@ -217,6 +225,7 @@ function PuzzleDetailPage() {
               onClick={() =>
                 setFormState(prev => ({ ...prev, hints: [...prev.hints, ''] }))
               }
+              style={{ padding: '10px 20px', alignSelf: 'flex-start' }}
             >
               Add hint
             </button>
@@ -225,30 +234,32 @@ function PuzzleDetailPage() {
 
         <div
           className='flex-container'
-          style={{ marginTop: 16, justifyContent: 'space-between' }}
+          style={{ marginTop: 24, justifyContent: 'space-between', alignItems: 'center', paddingTop: 24, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}
         >
-          <div className='flex-container' style={{ gap: 16, flexWrap: 'wrap' }}>
+          <div className='flex-container' style={{ gap: 24, flexWrap: 'wrap' }}>
             <label
               className='answer-label'
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}
             >
               <input
                 type='checkbox'
                 name='published'
                 checked={formState.published}
                 onChange={handleChange}
+                style={{ cursor: 'pointer' }}
               />
               Published
             </label>
             <label
               className='answer-label'
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}
             >
               <input
                 type='checkbox'
                 name='archived'
                 checked={formState.archived}
                 onChange={handleChange}
+                style={{ cursor: 'pointer' }}
               />
               Archived
             </label>
@@ -261,20 +272,24 @@ function PuzzleDetailPage() {
             {isNew
               ? createMutation.isPending
                 ? 'Creating…'
-                : 'Create'
+                : 'Create Puzzle'
               : updateMutation.isPending
-                ? 'Updating…'
-                : 'Update'}
+                ? 'Saving…'
+                : 'Save Changes'}
           </button>
         </div>
       </form>
 
       {!isNew && (
-        <div className='shell' style={{ padding: 16, marginTop: 16 }}>
+        <div className='shell' style={{ padding: 24, marginTop: 24 }}>
           <div
             className='flex-container'
-            style={{ gap: 12, justifyContent: 'flex-end' }}
+            style={{ gap: 16, justifyContent: 'space-between', alignItems: 'center' }}
           >
+            <div>
+              <h3 style={{ margin: 0, marginBottom: 4 }}>Danger Zone</h3>
+              <p className='muted' style={{ margin: 0 }}>Permanently delete this puzzle. This action cannot be undone.</p>
+            </div>
             <button
               type='button'
               className='danger-button'
@@ -287,7 +302,7 @@ function PuzzleDetailPage() {
               disabled={hardDelete.isPending}
               title='HARD DELETE – cannot be undone'
             >
-              {hardDelete.isPending ? 'Deleting…' : 'HARD DELETE'}
+              {hardDelete.isPending ? 'Deleting…' : 'Delete Puzzle'}
             </button>
           </div>
         </div>

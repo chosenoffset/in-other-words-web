@@ -87,7 +87,7 @@ export const puzzleSchema = z.object({
     'UNCATEGORIZED',
   ]),
   displayDate: z.string().nullable().optional(),
-  displayOrder: z.number().optional(),
+  displayOrder: z.number().nullable().optional(),
 
   published: z.boolean(),
   archived: z.boolean(),

@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_auth/cms')({
 function CmsLayout() {
   return (
     <main className='min-h-[calc(100vh-70px)]'>
-      <Container className='py-14'>
+      <Container size='full' className='py-14'>
         <div className='cms-layout'>
           <CmsNav />
           <section className='cms-main'>
